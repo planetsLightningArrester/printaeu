@@ -42,66 +42,102 @@ let bg = {
 
 let msOnOff = -5;
 
-function errorLineReference(err) {
-	let reference = errorLineNumber(err);
+// function errorLineReference(err) {
+// 	let reference = errorLineNumber(err);
 
-	if (typeof reference !== 'undefined') {
-		if (typeof reference.error !== 'undefined') {
-			return "\n* ErrorLine:" + reference.error + ' - CallLine:' + reference.call + " *\n";
-		}
-	}
-	return "\n* Couldn't get the error line *\n"
+// 	if (typeof reference !== 'undefined') {
+// 		if (typeof reference.error !== 'undefined') {
+// 			return "\n* ErrorLine:" + reference.error + ' - CallLine:' + reference.call + " *\n";
+// 		}
+// 	}
+// 	return "\n* Couldn't get the error line *\n"
+// }
+
+// // Takes the error's line number
+// function errorLineNumber(errObj) {
+// 	let lineNumber = {
+// 		error: "",
+// 		call: ""
+// 	};
+
+// 	let calls = errObj.stack.toString().split("\n");
+
+// 	for (let i = calls[1].length - 1; i > 0; i--) {
+// 		if (calls[1][i] === ":") {
+// 			for (let j = i - 1; j > 0; j--) {
+// 				if (calls[1][j] === ":") {
+// 					lineNumber.error = lineNumber.error.split("").reverse().join("");
+// 					i = 0;
+// 					j = 0;
+// 				} else {
+// 					lineNumber.error += calls[1][j];
+// 				}
+// 			}
+// 		}
+// 	}
+
+// 	let lastCallIndex = 2;
+// 	for (; lastCallIndex < calls.length; lastCallIndex++) {
+// 		if (!calls[lastCallIndex].includes('(')) {
+// 			break;
+// 		}
+// 	}
+
+// 	if (lastCallIndex >= calls.length) {
+// 		return;
+// 	}
+
+// 	for (let i = calls[lastCallIndex].length - 1; i > 0; i--) {
+// 		if (calls[lastCallIndex][i] === ":") {
+// 			for (let j = i - 1; j > 0; j--) {
+// 				if (calls[lastCallIndex][j] === ":") {
+// 					lineNumber.call = lineNumber.call.split("").reverse().join("");
+// 					i = 0;
+// 					j = 0;
+// 				} else {
+// 					lineNumber.call += calls[lastCallIndex][j];
+// 				}
+// 			}
+// 		}
+// 	}
+
+// 	return lineNumber;
+// }
+
+function getFunctionName(call = '') {
+	return call.slice(call.indexOf('at ') + 3, call.indexOf(' ('));
 }
 
-// Takes the error's line number
-function errorLineNumber(errObj) {
-	let lineNumber = {
-		error: "",
-		call: ""
-	};
+function getFileName(call = '') {
+	let splitted;
+	if (call.includes('\\')) {
+		splitted = call.split('\\');
+	} else {
+		splitted = call.split('/');
+	}
+
+	return splitted[splitted.length - 1].replace(')', '');
+}
+
+function errorTrace(errObj) {
+	let result = 'Error trace: \n';
+
+	print.bright.red('Error trace:');
 
 	let calls = errObj.stack.toString().split("\n");
+	let index = 0;
 
-	for (let i = calls[1].length - 1; i > 0; i--) {
-		if (calls[1][i] === ":") {
-			for (let j = i - 1; j > 0; j--) {
-				if (calls[1][j] === ":") {
-					lineNumber.error = lineNumber.error.split("").reverse().join("");
-					i = 0;
-					j = 0;
-				} else {
-					lineNumber.error += calls[1][j];
-				}
-			}
-		}
+	for (let i = calls.length - 1; i > 0; i--) {
+		const call = calls[i];
+
+		let functionName = getFunctionName(call);
+		let fileName = getFileName(call);
+
+
+
+		result += (index ? ((index === (calls.length - 2)) ? '[throw] ' : `${index})`) : '[call] ') + functionName + '(' + fileName + ')\n';
+		index++;
 	}
-
-	let lastCallIndex = 2;
-	for (; lastCallIndex < calls.length; lastCallIndex++) {
-		if (!calls[lastCallIndex].includes('(')) {
-			break;
-		}
-	}
-
-	if (lastCallIndex >= calls.length) {
-		return;
-	}
-
-	for (let i = calls[lastCallIndex].length - 1; i > 0; i--) {
-		if (calls[lastCallIndex][i] === ":") {
-			for (let j = i - 1; j > 0; j--) {
-				if (calls[lastCallIndex][j] === ":") {
-					lineNumber.call = lineNumber.call.split("").reverse().join("");
-					i = 0;
-					j = 0;
-				} else {
-					lineNumber.call += calls[lastCallIndex][j];
-				}
-			}
-		}
-	}
-
-	return lineNumber;
 }
 
 class Colors {
@@ -397,8 +433,30 @@ module.exports = new class Print {
 		process.stdout.write(color.reset);
 	};
 
-	track = (err) => {
-		this.red(errorLineReference(err));
+	track = (errObj) => {
+
+		this.bright.red('Error trace: ');
+
+		let calls = errObj.stack.toString().split("\n");
+		let index = 0;
+
+		for (let i = calls.length - 1; i > 0; i--) {
+			const call = calls[i];
+
+			let functionName = getFunctionName(call);
+			let fileName = getFileName(call);
+
+			if (!index) {
+				process.stdout.write(`${color.bright}${color.white}[call] ${color.reset}${functionName}(${fileName})\n`);
+				index++;	// To start from 2
+			} else if (index !== (calls.length - 1)) {
+				process.stdout.write(`${index}) ${functionName}(${fileName})\n`);
+			} else {
+				process.stdout.write(`${color.bright}${color.white}[throw] ${color.reset}${functionName}(${fileName})\n`);
+			}
+
+			index++;
+		}
 	};
 
 	setBg = {

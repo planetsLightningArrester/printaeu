@@ -1,6 +1,6 @@
 {
     "name": "printaeu",
-    "version": "0.0.2",
+    "version": "0.0.3",
     "description": "Alternative to console.log",
     "main": "printaeu.min.js",
     "repository": {
@@ -14,7 +14,9 @@
       "stamp",
       "inline",
       "colors",
-      "timestamp"
+      "timestamp",
+      "replace",
+      "line"
     ],
     "author": "Planet's Lightning Arrester",
     "license": "MIT",

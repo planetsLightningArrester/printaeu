@@ -1,1 +1,27 @@
-{"name":"printaeu","version":"0.0.2","description":"Alternative to console.log","main":"printaeu.min.js","repository":{"type":"git","url":"git+https://github.com/planetsLightningArrester/printaeu.git"},"keywords":["print","console","time","stamp","inline","colors","timestamp"],"author":"Planet's Lightning Arrester","license":"MIT","bugs":{"url":"https://github.com/planetsLightningArrester/printaeu/issues"},"homepage":"hhttps://github.com/planetsLightningArrester/printaeu#readme"}
+{
+    "name": "printaeu",
+    "version": "0.0.3",
+    "description": "Alternative to console.log",
+    "main": "printaeu.min.js",
+    "repository": {
+      "type": "git",
+      "url": "git+https://github.com/planetsLightningArrester/printaeu.git"
+    },
+    "keywords": [
+      "print",
+      "console",
+      "time",
+      "stamp",
+      "inline",
+      "colors",
+      "timestamp",
+      "replace",
+      "line"
+    ],
+    "author": "Planet's Lightning Arrester",
+    "license": "MIT",
+    "bugs": {
+      "url": "https://github.com/planetsLightningArrester/printaeu/issues"
+    },
+    "homepage": "hhttps://github.com/planetsLightningArrester/printaeu#readme"
+  }
