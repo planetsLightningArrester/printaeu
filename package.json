@@ -1,6 +1,6 @@
 {
     "name": "printaeu",
-    "version": "0.0.3",
+    "version": "0.0.4",
     "description": "Alternative to console.log",
     "main": "printaeu.min.js",
     "repository": {

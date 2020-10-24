@@ -1,30 +1,50 @@
+const process = require('process');
+
 const color = {
 	//Modifiers
 	reset: '\x1b[0m', //Reset to default
 	bright: "\x1b[1m", //Brighter
 	dim: "\x1b[2m", //Dim
+	italic: "\x1b[3m", //Italic
 	underscore: "\x1b[4m", //Put a underscore beneath everything
 	reverse: "\x1b[7m", //Reverses the fore and background colors
 
 	//Font colors
 	black: "\x1b[30m",
-	red: "\x1b[31m",
-	green: "\x1b[32m",
-	yellow: "\x1b[33m",
-	blue: "\x1b[34m",
-	magenta: "\x1b[35m",
-	cyan: "\x1b[36m",
-	white: "\x1b[37m",
+	red: "\u001b[38;5;9m",
+	green: "\u001b[38;5;10m",
+	yellow: "\u001b[38;5;11m",
+	blue: "\u001b[38;5;12m",
+	magenta: "\u001b[38;5;13m",
+	cyan: "\u001b[38;5;14m",
+	white: "\u001b[38;5;15m",
+	gray: "\u001b[38;5;248m",
+	pink: "\u001b[38;5;213m",
+	orange: "\u001b[38;5;214m",
+
+	// Dim
+	dimBlack: "\u001b[38;5;8m",	// Same as gray
+	dimRed: "\x1b[31m",
+	dimGreen: "\x1b[32m",
+	dimYellow: "\x1b[33m",
+	dimBlue: "\x1b[34m",
+	dimMagenta: "\x1b[35m",
+	dimCyan: "\x1b[36m",
+	dimWhite: "\x1b[37m",
+	dimGray: "\u001b[38;5;244m",
+	dimPink: "\u001b[38;5;207m",
+	dimOrange: "\u001b[38;5;208m",
+	
 
 	//Background colors
-	bgBlack: "\x1b[40m",
-	bgRed: "\x1b[41m",
-	bgGreen: "\x1b[42m",
-	bgYellow: "\x1b[43m",
-	bgBlue: "\x1b[44m",
-	bgMagenta: "\x1b[45m",
-	bgCyan: "\x1b[46m",
-	bgWhite: "\x1b[47m",
+	blackBg: "\x1b[40m",
+	redBg: "\x1b[41m",
+	greenBg: "\x1b[42m",
+	yellowBg: "\x1b[43m",
+	blueBg: "\x1b[44m",
+	magentaBg: "\x1b[45m",
+	cyanBg: "\x1b[46m",
+	whiteBg: "\x1b[47m",
 
 	cls: '\033c'
 };
@@ -37,72 +57,13 @@ let bg = {
 	blue: '',
 	magenta: '',
 	cyan: '',
-	white: ''
+	white: '',
+	gray: '',
+	pink: '',
+	orange: ''
 };
 
 let msOnOff = -5;
-
-// function errorLineReference(err) {
-// 	let reference = errorLineNumber(err);
-
-// 	if (typeof reference !== 'undefined') {
-// 		if (typeof reference.error !== 'undefined') {
-// 			return "\n* ErrorLine:" + reference.error + ' - CallLine:' + reference.call + " *\n";
-// 		}
-// 	}
-// 	return "\n* Couldn't get the error line *\n"
-// }
-
-// // Takes the error's line number
-// function errorLineNumber(errObj) {
-// 	let lineNumber = {
-// 		error: "",
-// 		call: ""
-// 	};
-
-// 	let calls = errObj.stack.toString().split("\n");
-
-// 	for (let i = calls[1].length - 1; i > 0; i--) {
-// 		if (calls[1][i] === ":") {
-// 			for (let j = i - 1; j > 0; j--) {
-// 				if (calls[1][j] === ":") {
-// 					lineNumber.error = lineNumber.error.split("").reverse().join("");
-// 					i = 0;
-// 					j = 0;
-// 				} else {
-// 					lineNumber.error += calls[1][j];
-// 				}
-// 			}
-// 		}
-// 	}
-
-// 	let lastCallIndex = 2;
-// 	for (; lastCallIndex < calls.length; lastCallIndex++) {
-// 		if (!calls[lastCallIndex].includes('(')) {
-// 			break;
-// 		}
-// 	}
-
-// 	if (lastCallIndex >= calls.length) {
-// 		return;
-// 	}
-
-// 	for (let i = calls[lastCallIndex].length - 1; i > 0; i--) {
-// 		if (calls[lastCallIndex][i] === ":") {
-// 			for (let j = i - 1; j > 0; j--) {
-// 				if (calls[lastCallIndex][j] === ":") {
-// 					lineNumber.call = lineNumber.call.split("").reverse().join("");
-// 					i = 0;
-// 					j = 0;
-// 				} else {
-// 					lineNumber.call += calls[lastCallIndex][j];
-// 				}
-// 			}
-// 		}
-// 	}
-
-// 	return lineNumber;
-// }
 
 function getFunctionName(call = '') {
 	return call.slice(call.indexOf('at ') + 3, call.indexOf(' ('));
@@ -117,27 +78,6 @@ function getFileName(call = '') {
 	}
 
 	return splitted[splitted.length - 1].replace(')', '');
-}
-
-function errorTrace(errObj) {
-	let result = 'Error trace: \n';
-
-	print.bright.red('Error trace:');
-
-	let calls = errObj.stack.toString().split("\n");
-	let index = 0;
-
-	for (let i = calls.length - 1; i > 0; i--) {
-		const call = calls[i];
-
-		let functionName = getFunctionName(call);
-		let fileName = getFileName(call);
-
-
-
-		result += (index ? ((index === (calls.length - 2)) ? '[throw] ' : `${index})`) : '[call] ') + functionName + '(' + fileName + ')\n';
-		index++;
-	}
 }
 
 class Colors {
@@ -188,6 +128,89 @@ class Colors {
 
 	white = (data, ...args) => {
 		console.log(`${this.modifier}${color.white}${bg.white}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	gray = (data, ...args) => {
+		console.log(`${this.modifier}${color.gray}${bg.gray}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	pink = (data, ...args) => {
+		console.log(`${this.modifier}${color.pink}${bg.pink}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	orange = (data, ...args) => {
+		console.log(`${this.modifier}${color.orange}${bg.orange}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+};
+
+class DimColors {
+
+	constructor(modifier) {
+		this.modifier = modifier;
+	}
+
+	log = (data, ...args) => {
+		console.log(`${this.modifier}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	black = (data, ...args) => {
+		console.log(`${this.modifier}${color.dimBlack}${bg.black}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	red = (data, ...args) => {
+		console.log(`${this.modifier}${color.dimRed}${bg.red}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	green = (data, ...args) => {
+		console.log(`${this.modifier}${color.dimGreen}${bg.green}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	yellow = (data, ...args) => {
+		console.log(`${this.modifier}${color.dimYellow}${bg.yellow}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	blue = (data, ...args) => {
+		console.log(`${this.modifier}${color.dimBlue}${bg.blue}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	magenta = (data, ...args) => {
+		console.log(`${this.modifier}${color.dimMagenta}${bg.magenta}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	cyan = (data, ...args) => {
+		console.log(`${this.modifier}${color.dimCyan}${bg.cyan}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	white = (data, ...args) => {
+		console.log(`${this.modifier}${color.dimWhite}${bg.white}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	gray = (data, ...args) => {
+		console.log(`${this.modifier}${color.dimGray}${bg.gray}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	pink = (data, ...args) => {
+		console.log(`${this.modifier}${color.dimPink}${bg.pink}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	orange = (data, ...args) => {
+		console.log(`${this.modifier}${color.dimOrange}${bg.orange}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
 	};
 };
@@ -269,6 +292,133 @@ class InlineColors {
 		console.log(`${this.modifier}${color.white}${bg.white}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
 	};
+	
+	gray = (data, ...args) => {
+		process.stdout.cursorTo(0);
+		process.stdout.moveCursor(0, -1);
+		process.stdout.clearLine();
+		console.log(`${this.modifier}${color.gray}${bg.gray}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	pink = (data, ...args) => {
+		process.stdout.cursorTo(0);
+		process.stdout.moveCursor(0, -1);
+		process.stdout.clearLine();
+		console.log(`${this.modifier}${color.pink}${bg.pink}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	orange = (data, ...args) => {
+		process.stdout.cursorTo(0);
+		process.stdout.moveCursor(0, -1);
+		process.stdout.clearLine();
+		console.log(`${this.modifier}${color.orange}${bg.orange}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+};
+
+class InlineDimColors {
+
+	constructor(modifier) {
+		this.modifier = modifier;
+	}
+
+	log = (data, ...args) => {
+		process.stdout.cursorTo(0);
+		process.stdout.moveCursor(0, -1);
+		process.stdout.clearLine();
+		console.log(`${this.modifier}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	black = (data, ...args) => {
+		process.stdout.cursorTo(0);
+		process.stdout.moveCursor(0, -1);
+		process.stdout.clearLine();
+		console.log(`${this.modifier}${color.dimBlack}${bg.black}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	red = (data, ...args) => {
+		process.stdout.cursorTo(0);
+		process.stdout.moveCursor(0, -1);
+		process.stdout.clearLine();
+		console.log(`${this.modifier}${color.dimRed}${bg.red}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	green = (data, ...args) => {
+		process.stdout.cursorTo(0);
+		process.stdout.moveCursor(0, -1);
+		process.stdout.clearLine();
+		console.log(`${this.modifier}${color.dimGreen}${bg.green}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	yellow = (data, ...args) => {
+		process.stdout.cursorTo(0);
+		process.stdout.moveCursor(0, -1);
+		process.stdout.clearLine();
+		console.log(`${this.modifier}${color.dimYellow}${bg.yellow}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	blue = (data, ...args) => {
+		process.stdout.cursorTo(0);
+		process.stdout.moveCursor(0, -1);
+		process.stdout.clearLine();
+		console.log(`${this.modifier}${color.dimBlue}${bg.blue}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	magenta = (data, ...args) => {
+		process.stdout.cursorTo(0);
+		process.stdout.moveCursor(0, -1);
+		process.stdout.clearLine();
+		console.log(`${this.modifier}${color.dimMagenta}${bg.magenta}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	cyan = (data, ...args) => {
+		process.stdout.cursorTo(0);
+		process.stdout.moveCursor(0, -1);
+		process.stdout.clearLine();
+		console.log(`${this.modifier}${color.dimCyan}${bg.cyan}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	white = (data, ...args) => {
+		process.stdout.cursorTo(0);
+		process.stdout.moveCursor(0, -1);
+		process.stdout.clearLine();
+		console.log(`${this.modifier}${color.dimWhite}${bg.white}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+	
+	gray = (data, ...args) => {
+		process.stdout.cursorTo(0);
+		process.stdout.moveCursor(0, -1);
+		process.stdout.clearLine();
+		console.log(`${this.modifier}${color.dimGray}${bg.gray}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	pink = (data, ...args) => {
+		process.stdout.cursorTo(0);
+		process.stdout.moveCursor(0, -1);
+		process.stdout.clearLine();
+		console.log(`${this.modifier}${color.dimPink}${bg.pink}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	orange = (data, ...args) => {
+		process.stdout.cursorTo(0);
+		process.stdout.moveCursor(0, -1);
+		process.stdout.clearLine();
+		console.log(`${this.modifier}${color.dimOrange}${bg.orange}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
 };
 
 module.exports = new class Print {
@@ -277,12 +427,16 @@ module.exports = new class Print {
 		this._socket = null;
 		this.msOnOff = -5;
 		this.bright = new Colors(color.bright);
-		this.dim = new Colors(color.dim);
+		this.bold = new Colors(color.bright);
+		this.italic = new Colors(color.italic);
+		this.dim = new DimColors(color.dim);
 		this.underscore = new Colors(color.underscore);
 		this.reverse = new Colors(color.reverse);
 		this.inline = {
 			bright: new InlineColors(color.bright),
-			dim: new InlineColors(color.dim),
+			bold: new InlineColors(color.bright),
+			italic: new InlineColors(color.italic),
+			dim: new InlineDimColors(color.dim),
 			underscore: new InlineColors(color.underscore),
 			reverse: new InlineColors(color.reverse),
 			log: (data, ...args) => {
@@ -354,6 +508,30 @@ module.exports = new class Print {
 				process.stdout.moveCursor(0, -1);
 				process.stdout.clearLine();
 				console.log(`${color.white}${bg.white}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+				process.stdout.write(color.reset);
+			},
+
+			gray: (data, ...args) => {
+				process.stdout.cursorTo(0);
+				process.stdout.moveCursor(0, -1);
+				process.stdout.clearLine();
+				console.log(`${color.gray}${bg.gray}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+				process.stdout.write(color.reset);
+			},
+
+			pink: (data, ...args) => {
+				process.stdout.cursorTo(0);
+				process.stdout.moveCursor(0, -1);
+				process.stdout.clearLine();
+				console.log(`${color.pink}${bg.pink}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+				process.stdout.write(color.reset);
+			},
+
+			orange: (data, ...args) => {
+				process.stdout.cursorTo(0);
+				process.stdout.moveCursor(0, -1);
+				process.stdout.clearLine();
+				console.log(`${color.orange}${bg.orange}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 				process.stdout.write(color.reset);
 			}
 
@@ -433,6 +611,21 @@ module.exports = new class Print {
 		process.stdout.write(color.reset);
 	};
 
+	gray = (data, ...args) => {
+		console.log(`${color.gray}${bg.gray}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	pink = (data, ...args) => {
+		console.log(`${color.pink}${bg.pink}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	orange = (data, ...args) => {
+		console.log(`${color.orange}${bg.orange}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
 	track = (errObj) => {
 
 		this.bright.red('Error trace: ');
@@ -450,7 +643,7 @@ module.exports = new class Print {
 				process.stdout.write(`${color.bright}${color.white}[call] ${color.reset}${functionName}(${fileName})\n`);
 				index++;	// To start from 2
 			} else if (index !== (calls.length - 1)) {
-				process.stdout.write(`${index}) ${functionName}(${fileName})\n`);
+				process.stdout.write(`[${index}] ${functionName}(${fileName})\n`);
 			} else {
 				process.stdout.write(`${color.bright}${color.white}[throw] ${color.reset}${functionName}(${fileName})\n`);
 			}
@@ -461,28 +654,37 @@ module.exports = new class Print {
 
 	setBg = {
 		black: (newBG) => {
-			bg.black = colors[newBG];
+			bg.black = color[newBG + 'Bg'];
 		},
 		red: (newBG) => {
-			bg.red = colors[newBG];
+			bg.red = color[newBG + 'Bg'];
 		},
 		green: (newBG) => {
-			bg.green = colors[newBG];
+			bg.green = color[newBG + 'Bg'];
 		},
 		yellow: (newBG) => {
-			bg.yellow = colors[newBG];
+			bg.yellow = color[newBG + 'Bg'];
 		},
 		blue: (newBG) => {
-			bg.blue = colors[newBG];
+			bg.blue = color[newBG + 'Bg'];
 		},
 		magenta: (newBG) => {
-			bg.magenta = colors[newBG];
+			bg.magenta = color[newBG + 'Bg'];
 		},
 		cyan: (newBG) => {
-			bg.cyan = colors[newBG];
+			bg.cyan = color[newBG + 'Bg'];
 		},
 		white: (newBG) => {
-			bg.white = colors[newBG];
+			bg.white = color[newBG + 'Bg'];
+		},
+		gray: (newBG) => {
+			bg.gray = color[newBG + 'Bg'];
+		},
+		pink: (newBG) => {
+			bg.pink = color[newBG + 'Bg'];
+		},
+		orange: (newBG) => {
+			bg.orange = color[newBG + 'Bg'];
 		}
 	};
 
@@ -510,6 +712,15 @@ module.exports = new class Print {
 		},
 		white: () => {
 			bg.white = '';
+		},
+		gray: () => {
+			bg.gray = '';
+		},
+		pink: () => {
+			bg.pink = '';
+		},
+		orange: () => {
+			bg.orange = '';
 		}
 	};
 
