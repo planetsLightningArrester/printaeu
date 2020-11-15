@@ -225,7 +225,7 @@ class InlineColors {
 
 	log = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -233,7 +233,7 @@ class InlineColors {
 
 	black = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.black}${bg.black}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -241,7 +241,7 @@ class InlineColors {
 
 	red = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.red}${bg.red}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -249,7 +249,7 @@ class InlineColors {
 
 	green = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.green}${bg.green}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -257,7 +257,7 @@ class InlineColors {
 
 	yellow = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.yellow}${bg.yellow}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -265,7 +265,7 @@ class InlineColors {
 
 	blue = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.blue}${bg.blue}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -273,7 +273,7 @@ class InlineColors {
 
 	magenta = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.magenta}${bg.magenta}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -281,7 +281,7 @@ class InlineColors {
 
 	cyan = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.cyan}${bg.cyan}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -289,7 +289,7 @@ class InlineColors {
 
 	white = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.white}${bg.white}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -297,7 +297,7 @@ class InlineColors {
 	
 	gray = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.gray}${bg.gray}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -305,7 +305,7 @@ class InlineColors {
 
 	pink = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.pink}${bg.pink}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -313,7 +313,7 @@ class InlineColors {
 
 	orange = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.orange}${bg.orange}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -328,7 +328,7 @@ class InlineDimColors {
 
 	log = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -336,7 +336,7 @@ class InlineDimColors {
 
 	black = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.dimBlack}${bg.black}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -344,7 +344,7 @@ class InlineDimColors {
 
 	red = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.dimRed}${bg.red}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -352,7 +352,7 @@ class InlineDimColors {
 
 	green = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.dimGreen}${bg.green}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -360,7 +360,7 @@ class InlineDimColors {
 
 	yellow = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.dimYellow}${bg.yellow}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -368,7 +368,7 @@ class InlineDimColors {
 
 	blue = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.dimBlue}${bg.blue}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -376,7 +376,7 @@ class InlineDimColors {
 
 	magenta = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.dimMagenta}${bg.magenta}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -384,7 +384,7 @@ class InlineDimColors {
 
 	cyan = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.dimCyan}${bg.cyan}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -392,7 +392,7 @@ class InlineDimColors {
 
 	white = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.dimWhite}${bg.white}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -400,7 +400,7 @@ class InlineDimColors {
 	
 	gray = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.dimGray}${bg.gray}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -408,7 +408,7 @@ class InlineDimColors {
 
 	pink = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.dimPink}${bg.pink}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -416,7 +416,7 @@ class InlineDimColors {
 
 	orange = (data, ...args) => {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -1);
+		readline.moveCursor(0, -1);
 		process.stdout.clearLine();
 		console.log(`${this.modifier}${color.dimOrange}${bg.orange}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -447,7 +447,7 @@ module.exports = new class Print {
 			reverse: new InlineColors(color.reverse),
 			log: (data, ...args) => {
 				readline.cursorTo(0);
-				process.stdout.moveCursor(0, -1);
+				readline.moveCursor(0, -1);
 				process.stdout.clearLine();
 				console.log(timeStamp() + data, args.reduce((t, e) => t + e + ' ', ''));
 				if (this._socket) this._socket.emit('console', timeStamp() + data);
@@ -455,7 +455,7 @@ module.exports = new class Print {
 
 			black: (data, ...args) => {
 				readline.cursorTo(0);
-				process.stdout.moveCursor(0, -1);
+				readline.moveCursor(0, -1);
 				process.stdout.clearLine();
 				console.log(`${color.black}${bg.black}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 				process.stdout.write(color.reset);
@@ -463,7 +463,7 @@ module.exports = new class Print {
 
 			red: (data, ...args) => {
 				readline.cursorTo(0);
-				process.stdout.moveCursor(0, -1);
+				readline.moveCursor(0, -1);
 				process.stdout.clearLine();
 				console.log(`${color.red}${bg.red}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 				process.stdout.write(color.reset);
@@ -471,7 +471,7 @@ module.exports = new class Print {
 
 			green: (data, ...args) => {
 				readline.cursorTo(0);
-				process.stdout.moveCursor(0, -1);
+				readline.moveCursor(0, -1);
 				process.stdout.clearLine();
 				console.log(`${color.green}${bg.green}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 				process.stdout.write(color.reset);
@@ -479,7 +479,7 @@ module.exports = new class Print {
 
 			yellow: (data, ...args) => {
 				readline.cursorTo(0);
-				process.stdout.moveCursor(0, -1);
+				readline.moveCursor(0, -1);
 				process.stdout.clearLine();
 				console.log(`${color.yellow}${bg.yellow}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 				process.stdout.write(color.reset);
@@ -487,7 +487,7 @@ module.exports = new class Print {
 
 			blue: (data, ...args) => {
 				readline.cursorTo(0);
-				process.stdout.moveCursor(0, -1);
+				readline.moveCursor(0, -1);
 				process.stdout.clearLine();
 				console.log(`${color.blue}${bg.blue}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 				process.stdout.write(color.reset);
@@ -495,7 +495,7 @@ module.exports = new class Print {
 
 			magenta: (data, ...args) => {
 				readline.cursorTo(0);
-				process.stdout.moveCursor(0, -1);
+				readline.moveCursor(0, -1);
 				process.stdout.clearLine();
 				console.log(`${color.magenta}${bg.magenta}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 				process.stdout.write(color.reset);
@@ -503,7 +503,7 @@ module.exports = new class Print {
 
 			cyan: (data, ...args) => {
 				readline.cursorTo(0);
-				process.stdout.moveCursor(0, -1);
+				readline.moveCursor(0, -1);
 				process.stdout.clearLine();
 				console.log(`${color.cyan}${bg.cyan}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 				process.stdout.write(color.reset);
@@ -511,7 +511,7 @@ module.exports = new class Print {
 
 			white: (data, ...args) => {
 				readline.cursorTo(0);
-				process.stdout.moveCursor(0, -1);
+				readline.moveCursor(0, -1);
 				process.stdout.clearLine();
 				console.log(`${color.white}${bg.white}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 				process.stdout.write(color.reset);
@@ -519,7 +519,7 @@ module.exports = new class Print {
 
 			gray: (data, ...args) => {
 				readline.cursorTo(0);
-				process.stdout.moveCursor(0, -1);
+				readline.moveCursor(0, -1);
 				process.stdout.clearLine();
 				console.log(`${color.gray}${bg.gray}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 				process.stdout.write(color.reset);
@@ -527,7 +527,7 @@ module.exports = new class Print {
 
 			pink: (data, ...args) => {
 				readline.cursorTo(0);
-				process.stdout.moveCursor(0, -1);
+				readline.moveCursor(0, -1);
 				process.stdout.clearLine();
 				console.log(`${color.pink}${bg.pink}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 				process.stdout.write(color.reset);
@@ -535,7 +535,7 @@ module.exports = new class Print {
 
 			orange: (data, ...args) => {
 				readline.cursorTo(0);
-				process.stdout.moveCursor(0, -1);
+				readline.moveCursor(0, -1);
 				process.stdout.clearLine();
 				console.log(`${color.orange}${bg.orange}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 				process.stdout.write(color.reset);
@@ -592,13 +592,13 @@ module.exports = new class Print {
 
 	goBacknLines = function (lines) {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -lines);
+		readline.moveCursor(0, -lines);
 		process.stdout.clearLine();
 	};
 
 	clearLine = function (lines = 0) {
 		readline.cursorTo(0);
-		process.stdout.moveCursor(0, -lines);
+		readline.moveCursor(0, -lines);
 		process.stdout.clearLine();
 	};
 
