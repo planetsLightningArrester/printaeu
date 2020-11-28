@@ -1,6 +1,6 @@
 # printaeu
 
-Time stamp is a must. Period.
+Time stamp is a must. **Period.**
 
 console.log() + replace line + time stamp (even with ms) + colors + modifiers = print
 
@@ -11,7 +11,7 @@ console.log() + replace line + time stamp (even with ms) + colors + modifiers = 
 It's just a wrap for `console.log()`, **but with time stamp**. So it receives the same parameters of `console.log`.
 
 ```JavaScript
-const print = require('./printaeu');
+const print = require('printaeu');
 
 // All of them has time stamp
 print.log('Like console.log');  // [08:39] Like console.log
@@ -52,7 +52,7 @@ print.orange('Orange');
 I don't commit errors, but when you do it's better to know where this come from.
 
 ```Javascript
-const print = require('./printaeu');
+const print = require('printaeu');
 
 function foo () {
     print.green(thisVarDoesntExist);
@@ -61,7 +61,7 @@ function foo () {
 try {
     foo();
 } catch(e) {
-    print.red('omg wheres this error come from? help me print');
+    print.red('omg where does this error come from? help me print');
     print.track(e); // Like stack error, but beautier
 }
 ```
@@ -70,7 +70,7 @@ try {
 Copy, paste and run.
 
 ```Javascript
-const print = require('./printaeu');
+const print = require('printaeu');
 
 const hey = 'HEY';
 print.log(hey, `${hey}`, 'YOU YOU');
@@ -93,7 +93,7 @@ setTimeout(() => {print.inline.bright.red('I could be your girlfriend \u{2764} \
 ### Whole Lib
 
 ```JavaScript
-const print = require('./printaeu');
+const print = require('printaeu');
 
 // All of them has time stamp
 print.log('Like console.log');  // [08:39] Like console.log
