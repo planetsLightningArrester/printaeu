@@ -1,11 +1,15 @@
 {
   "name": "printaeu",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "description": "Alternative to console.log",
   "main": "printaeu.min.js",
+  "types": "printaeu.d.ts",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/planetsLightningArrester/printaeu.git"
+  },
+  "scripts": {
+    "build": "node .\\node_modules\\typescript\\bin\\tsc .\\src\\printaeu.ts --declaration; node .\\utils\\generateMin.js; copy .\\src\\printaeu.d.ts .\\release\\"
   },
   "keywords": [
     "print",
@@ -23,7 +27,13 @@
   "bugs": {
     "url": "https://github.com/planetsLightningArrester/printaeu/issues"
   },
-  "engines": {"node": ">=12"},
+  "engines": {
+    "node": ">=12"
+  },
   "engineStrict": true,
-  "homepage": "hhttps://github.com/planetsLightningArrester/printaeu#readme"
+  "homepage": "hhttps://github.com/planetsLightningArrester/printaeu#readme",
+  "devDependencies": {
+    "@types/node": "^15.0.1",
+    "typescript": "^4.2.4"
+  }
 }
