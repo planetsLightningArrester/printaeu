@@ -1,5 +1,5 @@
-// const print = require('../release/printaeu.min.js');
-const { print } = require('../src/printaeu');
+const print = require('../release/printaeu.min.js');
+// const { print } = require('../src/printaeu');
 
 print.black('black');
 print.inline.red('red');
