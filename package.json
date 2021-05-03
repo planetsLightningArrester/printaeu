@@ -1,6 +1,6 @@
 {
   "name": "printaeu",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Alternative to console.log",
   "main": "printaeu.min.js",
   "types": "printaeu.d.ts",
@@ -9,7 +9,8 @@
     "url": "git+https://github.com/planetsLightningArrester/printaeu.git"
   },
   "scripts": {
-    "build": "node .\\node_modules\\typescript\\bin\\tsc .\\src\\printaeu.ts --declaration; node .\\utils\\generateMin.js; copy .\\src\\printaeu.d.ts .\\release\\"
+    "build": "node .\\node_modules\\typescript\\bin\\tsc .\\src\\printaeu.ts --declaration; node .\\utils\\generateMin.js; copy .\\src\\printaeu.d.ts .\\release\\; copy .\\README.md .\\release\\",
+    "publish": "npm publish .\\release\\ --access=public"
   },
   "keywords": [
     "print",

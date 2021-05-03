@@ -118,6 +118,7 @@ print.blue('Blue');
 print.cyan('Cyan');
 print.yellow('Yellow');
 print.gray('Gray');
+print.gray('Same as grey');
 print.pink('Pink');
 print.orange('Orange');
 

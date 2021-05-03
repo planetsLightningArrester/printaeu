@@ -19,5 +19,6 @@ print.black('Black');
 print.blue('Blue');
 print.cyan('Cyan');
 print.gray('Gray');
+print.grey('Grey');
 print.pink('Pink');
 print.orange('Orange');

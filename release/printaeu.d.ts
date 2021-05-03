@@ -10,6 +10,7 @@ interface Printers {
     cyan(data: any, ...args: any[]): void;
     white(data: any, ...args: any[]): void;
     gray(data: any, ...args: any[]): void;
+    grey(data: any, ...args: any[]): void;
     pink(data: any, ...args: any[]): void;
     orange(data: any, ...args: any[]): void;
 }
@@ -46,6 +47,7 @@ export declare const print: {
     cyan(data: any, ...args: any[]): void;
     white(data: any, ...args: any[]): void;
     gray(data: any, ...args: any[]): void;
+    grey(data: any, ...args: any[]): void;
     pink(data: any, ...args: any[]): void;
     orange(data: any, ...args: any[]): void;
     track(error: Error): void;
@@ -59,6 +61,7 @@ export declare const print: {
         cyan: (newBG: string) => void;
         white: (newBG: string) => void;
         gray: (newBG: string) => void;
+        grey: (newBG: string) => void;
         pink: (newBG: string) => void;
         orange: (newBG: string) => void;
     };
@@ -72,6 +75,7 @@ export declare const print: {
         cyan: () => void;
         white: () => void;
         gray: () => void;
+        grey: () => void;
         pink: () => void;
         orange: () => void;
     };

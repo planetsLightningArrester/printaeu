@@ -173,6 +173,15 @@ var Colors = /** @class */ (function () {
         process.stdout.write(color.reset);
     };
     ;
+    Colors.prototype.grey = function (data) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        console.log("" + this.modifier + color[this.dim + 'gray'] + bg.gray + timeStamp() + data, args.reduce(function (t, e) { return t + e + ' '; }, ''));
+        process.stdout.write(color.reset);
+    };
+    ;
     Colors.prototype.pink = function (data) {
         var args = [];
         for (var _i = 1; _i < arguments.length; _i++) {
@@ -319,6 +328,18 @@ var InlineColors = /** @class */ (function () {
         process.stdout.write(color.reset);
     };
     ;
+    InlineColors.prototype.grey = function (data) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        readline.cursorTo(process.stdout, 0);
+        readline.moveCursor(process.stdout, 0, -1);
+        readline.clearLine(process.stdout, 0);
+        console.log("" + this.modifier + color[this.dim + 'gray'] + bg.gray + timeStamp() + data, args.reduce(function (t, e) { return t + e + ' '; }, ''));
+        process.stdout.write(color.reset);
+    };
+    ;
     InlineColors.prototype.pink = function (data) {
         var args = [];
         for (var _i = 1; _i < arguments.length; _i++) {
@@ -380,6 +401,9 @@ exports.print = new /** @class */ (function () {
             gray: function (newBG) {
                 bg.gray = color[newBG + '_BG'];
             },
+            grey: function (newBG) {
+                bg.gray = color[newBG + '_BG'];
+            },
             pink: function (newBG) {
                 bg.pink = color[newBG + '_BG'];
             },
@@ -413,6 +437,9 @@ exports.print = new /** @class */ (function () {
                 bg.white = '';
             },
             gray: function () {
+                bg.gray = '';
+            },
+            grey: function () {
                 bg.gray = '';
             },
             pink: function () {
@@ -536,6 +563,17 @@ exports.print = new /** @class */ (function () {
                 process.stdout.write(color.reset);
             },
             gray: function (data) {
+                var args = [];
+                for (var _i = 1; _i < arguments.length; _i++) {
+                    args[_i - 1] = arguments[_i];
+                }
+                readline.cursorTo(process.stdout, 0);
+                readline.moveCursor(process.stdout, 0, -1);
+                readline.clearLine(process.stdout, 0);
+                console.log("" + color.gray + bg.gray + timeStamp() + data, args.reduce(function (t, e) { return t + e + ' '; }, ''));
+                process.stdout.write(color.reset);
+            },
+            grey: function (data) {
                 var args = [];
                 for (var _i = 1; _i < arguments.length; _i++) {
                     args[_i - 1] = arguments[_i];
@@ -729,6 +767,15 @@ exports.print = new /** @class */ (function () {
     };
     ;
     Print.prototype.gray = function (data) {
+        var args = [];
+        for (var _i = 1; _i < arguments.length; _i++) {
+            args[_i - 1] = arguments[_i];
+        }
+        console.log("" + color.gray + bg.gray + timeStamp() + data, args.reduce(function (t, e) { return t + e + ' '; }, ''));
+        process.stdout.write(color.reset);
+    };
+    ;
+    Print.prototype.grey = function (data) {
         var args = [];
         for (var _i = 1; _i < arguments.length; _i++) {
             args[_i - 1] = arguments[_i];

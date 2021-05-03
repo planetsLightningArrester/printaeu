@@ -14,6 +14,7 @@ interface Printers {
 	cyan		(data: any, ...args: any[]): void
 	white		(data: any, ...args: any[]): void
 	gray		(data: any, ...args: any[]): void
+	grey		(data: any, ...args: any[]): void
 	pink		(data: any, ...args: any[]): void
 	orange	(data: any, ...args: any[]): void
 };
@@ -192,6 +193,11 @@ class Colors {
 		process.stdout.write(color.reset);
 	};
 
+	grey(data: any, ...args: any[]): void {
+		console.log(`${this.modifier}${color[this.dim + 'gray']}${bg.gray}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
 	pink(data: any, ...args: any[]): void {
 		console.log(`${this.modifier}${color[this.dim + 'pink']}${bg.pink}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -287,6 +293,14 @@ class InlineColors {
 	};
 	
 	gray(data: any, ...args: any[]): void {
+		readline.cursorTo(process.stdout, 0);
+		readline.moveCursor(process.stdout, 0, -1);
+		readline.clearLine(process.stdout, 0);
+		console.log(`${this.modifier}${color[this.dim +'gray']}${bg.gray}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
+	grey(data: any, ...args: any[]): void {
 		readline.cursorTo(process.stdout, 0);
 		readline.moveCursor(process.stdout, 0, -1);
 		readline.clearLine(process.stdout, 0);
@@ -418,6 +432,14 @@ export const print = new class Print implements Printaeu {
 			},
 
 			gray: (data: any, ...args: any[]): void => {
+				readline.cursorTo(process.stdout, 0);
+				readline.moveCursor(process.stdout, 0, -1);
+				readline.clearLine(process.stdout, 0);
+				console.log(`${color.gray}${bg.gray}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+				process.stdout.write(color.reset);
+			},
+
+			grey: (data: any, ...args: any[]): void => {
 				readline.cursorTo(process.stdout, 0);
 				readline.moveCursor(process.stdout, 0, -1);
 				readline.clearLine(process.stdout, 0);
@@ -567,6 +589,11 @@ export const print = new class Print implements Printaeu {
 		process.stdout.write(color.reset);
 	};
 
+	grey(data: any, ...args: any[]): void {
+		console.log(`${color.gray}${bg.gray}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+		process.stdout.write(color.reset);
+	};
+
 	pink(data: any, ...args: any[]): void {
 		console.log(`${color.pink}${bg.pink}${timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 		process.stdout.write(color.reset);
@@ -635,6 +662,9 @@ export const print = new class Print implements Printaeu {
 		gray: (newBG: string): void => {
 			bg.gray = color[newBG + '_BG'];
 		},
+		grey: (newBG: string): void => {
+			bg.gray = color[newBG + '_BG'];
+		},
 		pink: (newBG: string): void => {
 			bg.pink = color[newBG + '_BG'];
 		},
@@ -669,6 +699,9 @@ export const print = new class Print implements Printaeu {
 			bg.white = '';
 		},
 		gray: (): void => {
+			bg.gray = '';
+		},
+		grey: (): void => {
 			bg.gray = '';
 		},
 		pink: (): void => {
