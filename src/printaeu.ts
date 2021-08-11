@@ -714,7 +714,15 @@ export const print = new class Print implements Printaeu {
 
 };
 
+// Some emojis
+export const warning = '\u{26a0}',
+      recycle = '\u{267b}',
+      heart   = '\u{2764}',
+      heavy_check_mark = '\u{FE0F}',
+      satellite_antenna = '\u{1F4E1}',
+      no_entry = '\u{26D4}';
+
 function timeStamp(): string {
-	let time : string = new Date().toISOString();
+	let time : string = new Date((new Date()).getTime() - (new Date()).getTimezoneOffset()*60*1000).toISOString();
 	return '[' + time.slice(dateOnOff, msOnOff) + '] ';
 }

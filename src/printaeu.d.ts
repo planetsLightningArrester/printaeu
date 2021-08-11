@@ -80,4 +80,5 @@ export declare const print: {
         orange: () => void;
     };
 };
+export declare const warning = "\u26A0", recycle = "\u267B", heart = "\u2764", heavy_check_mark = "\uFE0F", satellite_antenna = "\uD83D\uDCE1", no_entry = "\u26D4";
 export {};
