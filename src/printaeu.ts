@@ -198,7 +198,7 @@ class Printers {
 			}
 
 			console.log(`${this.modifier}${this.timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
-			process.stdout.write(color.reset);
+			if (this.modifier) process.stdout.write(color.reset);
 			if (this._socket) this._socket.emit('console', this.timeStamp() + data);
 		}
 	};
