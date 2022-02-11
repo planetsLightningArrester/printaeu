@@ -1,4 +1,4 @@
-const { print } = require('../release/printaeu.min.js');
+const { print } = require('../dist/printaeu.min.js');
 // const { print } = require('../src/printaeu');
 
 // All of them has time stamp

@@ -1,4 +1,4 @@
-import { print } from "../release/printaeu.min.js";
+import { print, bold } from "../dist/printaeu.js";
 
 print.black('black');
 print.inline.red('red');

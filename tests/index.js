@@ -1,4 +1,4 @@
-const { print } = require('../release/printaeu.min.js');
+const { print } = require('../dist/printaeu.min.js');
 // const { print } = require('../src/printaeu');
 
 print.black('black');
@@ -27,7 +27,6 @@ print.bright.grey('grey');
 print.bright.pink('pink');
 print.bright.orange('orange');
 
-print.showDate();
 print.dim.black('black');
 print.dim.red('red');
 print.dim.green('green');
@@ -40,7 +39,6 @@ print.dim.gray('gray');
 print.dim.grey('grey');
 print.dim.pink('pink');
 print.dim.orange('orange');
-print.showDate(false);
 
 print.italic.black('black');
 print.italic.red('red');
@@ -55,7 +53,6 @@ print.italic.grey('grey');
 print.italic.pink('pink');
 print.italic.orange('orange');
 
-print.showMs();
 print.reverse.black('black');
 print.reverse.red('red');
 print.reverse.green('green');
@@ -68,6 +65,7 @@ print.reverse.gray('gray');
 print.reverse.grey('grey');
 print.reverse.pink('pink');
 print.reverse.orange('orange');
+
 print.inline.dim.black('black');
 print.inline.dim.red('red');
 print.inline.dim.green('green');
@@ -81,10 +79,9 @@ print.inline.dim.grey('grey');
 print.inline.dim.pink('pink');
 print.inline.dim.orange('orange');
 print.setBg.cyan('magenta');
-print.showMs(false);
 
 print.cyan('hiiiiiii')
-// print.clear();
+print.clear();
 print.cyan('hiiiiiii2')
 print.bold.cyan('hiiiiiii2')
 
