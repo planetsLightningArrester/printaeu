@@ -1,6 +1,6 @@
 {
   "name": "printaeu",
-  "version": "0.1.6",
+  "version": "0.1.8",
   "description": "Alternative to console.log",
   "main": "printaeu.js",
   "types": "printaeu.d.ts",
@@ -11,7 +11,7 @@
   "scripts": {
     "build": "node .\\node_modules\\typescript\\bin\\tsc .\\src\\printaeu.ts --declaration && node .\\utils\\generateMin.js && copy .\\src\\printaeu.d.ts .\\release\\ && copy .\\README.md .\\release\\",
     "pack": "webpack --mode production",
-    "publish": "npm run pack && npm publish .\\dist\\ --access=public",
+    "pub": "npm publish .\\dist\\ --access=public",
     "test": "jest"
   },
   "keywords": [

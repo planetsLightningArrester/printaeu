@@ -33,6 +33,7 @@ const config: webpack.Configuration = {
     extensions: ['.js', '.ts']
   },
   output: {
+    libraryTarget: 'commonjs',
     filename: 'printaeu.js',
     path: path.resolve(__dirname, 'dist')
   },

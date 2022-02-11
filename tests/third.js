@@ -1,4 +1,4 @@
-const { print, warning, recycle, heart } = require('../dist/printaeu.min.js');
+const { print, warning, recycle, heart } = require('../dist/printaeu.js');
 // const { print } = require('../src/printaeu');
 
 const hey = 'HEY';

@@ -1,4 +1,4 @@
-const { print } = require('../dist/printaeu.min.js');
+const { print } = require('../dist/printaeu.js');
 // const { print } = require('../src/printaeu');
 
 print.black('black');
