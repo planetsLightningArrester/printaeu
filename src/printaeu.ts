@@ -1,4 +1,4 @@
-import { Socket } from "node:dgram";
+import { Socket } from 'dgram';
 
 import * as readline from "readline";
 import * as fs from "fs";

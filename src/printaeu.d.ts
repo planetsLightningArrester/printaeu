@@ -1,9 +1,9 @@
 /// <reference types="node" />
-import { Socket } from "node:dgram";
+import { Socket } from 'dgram';
 /**
  * Possible background colors
  */
-export declare type BackgroundsColors = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white';
+export type BackgroundsColors = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white';
 /**
  * The bold modifier
  */
@@ -196,7 +196,7 @@ declare class Modifiers extends Printers {
 /**
  * Verbosity options
  */
-export declare type VerbosityOptions = 'low' | 'medium' | 'high';
+export type VerbosityOptions = 'low' | 'medium' | 'high';
 /**
  * Internal verbosity enum
  */
