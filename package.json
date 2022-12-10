@@ -9,9 +9,12 @@
     "url": "git+https://github.com/planetsLightningArrester/printaeu.git"
   },
   "scripts": {
-    "build": "node .\\node_modules\\typescript\\bin\\tsc .\\src\\printaeu.ts --declaration && copy .\\src\\printaeu.d.ts .\\dist\\ && copy .\\README.md .\\dist\\",
+    "build": "run-script-os",
+    "build:linux": "node ./node_modules/typescript/bin/tsc ./src/printaeu.ts --declaration && rm -rf dist && mkdir -p ./dist && cp -rft ./dist ./src/printaeu.d.ts ./README.md",
+    "build:windows": "node .\\node_modules\\typescript\\bin\\tsc .\\src\\printaeu.ts --declaration && copy .\\src\\printaeu.d.ts .\\dist\\ && copy .\\README.md .\\dist\\",
     "pack": "webpack --mode production",
-    "pub": "npm publish .\\dist\\ --access=public",
+    "pub:linux": "npm publish ./dist --access=public",
+    "pub:windows": "npm publish .\\dist\\ --access=public",
     "test": "jest"
   },
   "keywords": [
@@ -47,6 +50,7 @@
     "babel-jest": "^29.3.1",
     "copy-webpack-plugin": "^11.0.0",
     "jest": "^29.3.1",
+    "run-script-os": "^1.1.6",
     "terser-webpack-plugin": "^5.3.6",
     "ts-loader": "^9.4.1",
     "ts-node": "^10.5.0",
