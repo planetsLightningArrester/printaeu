@@ -13,6 +13,7 @@
     "build:linux": "rm -rf dist && mkdir -p ./dist && node ./node_modules/typescript/bin/tsc ./src/printaeu.ts --declaration && cp -rft ./dist ./src/printaeu.js ./src/printaeu.d.ts ./README.md",
     "build:windows": "node .\\node_modules\\typescript\\bin\\tsc .\\src\\printaeu.ts --declaration && copy .\\src\\printaeu.d.ts .\\dist\\ && copy .\\README.md .\\dist\\",
     "pack": "webpack --mode production",
+    "pub": "run-script-os",
     "pub:linux": "npm publish ./dist --access=public",
     "pub:windows": "npm publish .\\dist\\ --access=public",
     "test": "jest"
