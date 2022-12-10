@@ -18,10 +18,10 @@ class TextModifiers {
 	 * Turn on the modifier to be included inside the `print` call
 	 * @example 
 	 * import { print, bold as b, italic as i, dim as d, underline as u, reverse as r } from 'printaeu'
-	 * print.log(`No way I'm gonna do ${bold.on()}this${bold.off()}`);
-	 * print.log(`${italic.on()}Believe me, you'll!${italic.off()} - he said`);
-	 * print.log(`${dim.on()}How?${dim.off()} - I thought`);
-	 * print.log(`Check ${underline.on()}this${underline.off()} out`);
+	 * print.log(`No way I'm gonna do ${b.on()}this${b.off()}`);
+	 * print.log(`${i.on()}Believe me, you'll!${i.off()} - he said`);
+	 * print.log(`${d.on()}How?${d.off()} - I thought`);
+	 * print.log(`Check ${u.on()}this${u.off()} out`);
 	 * print.log(`Shot ${r.on}reverse${r.off} shot`);
 	 */
 	readonly on: string = '';
@@ -29,10 +29,10 @@ class TextModifiers {
 	 * Turn off the modifier to be included inside the `print` call
 	 * @example 
 	 * import { print, bold as b, italic as i, dim as d, underline as u, reverse as r } from 'printaeu'
-	 * print.log(`No way I'm gonna do ${bold.on()}this${bold.off()}`);
-	 * print.log(`${italic.on()}Believe me, you'll!${italic.off()} - he said`);
-	 * print.log(`${dim.on()}How?${dim.off()} - I thought`);
-	 * print.log(`Check ${underline.on()}this${underline.off()} out`);
+	 * print.log(`No way I'm gonna do ${b.on()}this${b.off()}`);
+	 * print.log(`${i.on()}Believe me, you'll!${i.off()} - he said`);
+	 * print.log(`${d.on()}How?${d.off()} - I thought`);
+	 * print.log(`Check ${u.on()}this${u.off()} out`);
 	 * print.log(`Shot ${r.on}reverse${r.off} shot`);
 	 */
 	readonly off: string = '';
