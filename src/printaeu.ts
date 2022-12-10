@@ -125,7 +125,7 @@ class ColorModifiers {
 	cls: string = '\x1bc';
 }
 
-const color: ColorModifiers = new ColorModifiers();
+export const color: ColorModifiers = new ColorModifiers();
 
 /**
  * String offsets to show or hide the milliseconds from the time stamp
