@@ -4,6 +4,10 @@ import { Socket } from 'dgram';
  * Possible background colors
  */
 export type BackgroundsColors = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white';
+interface Backgrounds {
+    name: BackgroundsColors;
+    value: string;
+}
 /**
  * The bold modifier
  */
@@ -39,6 +43,39 @@ export declare const reverse: {
     readonly on: "\u001B[7m";
     readonly off: "\u001B[27m";
 };
+declare class ColorModifiers {
+    reset: string;
+    bright: string;
+    dim: string;
+    italic: string;
+    underline: string;
+    reverse: string;
+    black: string;
+    red: string;
+    green: string;
+    yellow: string;
+    blue: string;
+    magenta: string;
+    cyan: string;
+    white: string;
+    gray: string;
+    pink: string;
+    orange: string;
+    dimBlack: string;
+    dimRed: string;
+    dimGreen: string;
+    dimYellow: string;
+    dimBlue: string;
+    dimMagenta: string;
+    dimCyan: string;
+    dimWhite: string;
+    dimGray: string;
+    dimPink: string;
+    dimOrange: string;
+    backgrounds: Backgrounds[];
+    cls: string;
+}
+export declare const color: ColorModifiers;
 /**
  * String offsets to show or hide the milliseconds from the time stamp
  */
@@ -236,6 +273,10 @@ declare class PrintConfig {
      */
     dateOnOff: DATE;
     /**
+     * String to pre-append in all `print` calls
+     */
+    preAppend: string;
+    /**
      * The socket, if any, to have the 'console' event triggered every `print.log` call
      */
     socket: Socket | undefined;
@@ -294,7 +335,7 @@ declare class PrintConfig {
     };
     constructor();
 }
-declare class Print extends Modifiers {
+export declare class Print extends Modifiers {
     /**
      * Print the text on the same line as the current cursor
      */
@@ -317,6 +358,11 @@ declare class Print extends Modifiers {
      * @returns awesomeness
      */
     static create(): Print;
+    /**
+     * Pre-append a string on all `print` calls
+     * @param str
+     */
+    preAppend(str: string): void;
     /**
      * Move the cursor to some lines above its current position
      * @param lines the number of lines from the cursor current position

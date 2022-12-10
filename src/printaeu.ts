@@ -192,12 +192,11 @@ class Printers {
 			}
 			let modifiers: string = this.modifier;
 			if (!this.config.cleanTimeStamp) {
-				modifiers = `${modifiers}${this.timeStamp()}`;
+				modifiers = `${modifiers}${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			} else {
-				modifiers = `${this.timeStamp()}${modifiers}`;
+				modifiers = `${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			}
-
-			console.log(`${this.modifier}${this.timeStamp()}${data}`, args.reduce((t, e) => t + e + ' ', ''));
+			console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 			if (this.modifier) process.stdout.write(color.reset);
 			if (this._socket) this._socket.emit('console', this.timeStamp() + data);
 		}
@@ -217,9 +216,9 @@ class Printers {
 			}
 			let modifiers: string = `${this.modifier}${this.isDim?color.dimBlack:color.black}${this.config.backgroundColors.black}`;
 			if (!this.config.cleanTimeStamp) {
-				modifiers = `${modifiers}${this.timeStamp()}`;
+				modifiers = `${modifiers}${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			} else {
-				modifiers = `${this.timeStamp()}${modifiers}`;
+				modifiers = `${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			}
 			console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 			process.stdout.write(color.reset);
@@ -240,9 +239,9 @@ class Printers {
 			}
 			let modifiers: string = `${this.modifier}${this.isDim?color.dimRed:color.red}${this.config.backgroundColors.red}`;
 			if (!this.config.cleanTimeStamp) {
-				modifiers = `${modifiers}${this.timeStamp()}`;
+				modifiers = `${modifiers}${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			} else {
-				modifiers = `${this.timeStamp()}${modifiers}`;
+				modifiers = `${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			}
 			console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 			process.stdout.write(color.reset);
@@ -263,9 +262,9 @@ class Printers {
 			}
 			let modifiers: string = `${this.modifier}${this.isDim?color.dimGreen:color.green}${this.config.backgroundColors.green}`;
 			if (!this.config.cleanTimeStamp) {
-				modifiers = `${modifiers}${this.timeStamp()}`;
+				modifiers = `${modifiers}${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			} else {
-				modifiers = `${this.timeStamp()}${modifiers}`;
+				modifiers = `${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			}
 			console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 			process.stdout.write(color.reset);
@@ -286,9 +285,9 @@ class Printers {
 			}
 			let modifiers: string = `${this.modifier}${this.isDim?color.dimYellow:color.yellow}${this.config.backgroundColors.yellow}`;
 			if (!this.config.cleanTimeStamp) {
-				modifiers = `${modifiers}${this.timeStamp()}`;
+				modifiers = `${modifiers}${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			} else {
-				modifiers = `${this.timeStamp()}${modifiers}`;
+				modifiers = `${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			}
 			console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 			process.stdout.write(color.reset);
@@ -309,9 +308,9 @@ class Printers {
 			}
 			let modifiers: string = `${this.modifier}${this.isDim?color.dimBlue:color.blue}${this.config.backgroundColors.blue}`;
 			if (!this.config.cleanTimeStamp) {
-				modifiers = `${modifiers}${this.timeStamp()}`;
+				modifiers = `${modifiers}${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			} else {
-				modifiers = `${this.timeStamp()}${modifiers}`;
+				modifiers = `${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			}
 			console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 			process.stdout.write(color.reset);
@@ -332,9 +331,9 @@ class Printers {
 			}
 			let modifiers: string = `${this.modifier}${this.isDim?color.dimMagenta:color.magenta}${this.config.backgroundColors.magenta}`;
 			if (!this.config.cleanTimeStamp) {
-				modifiers = `${modifiers}${this.timeStamp()}`;
+				modifiers = `${modifiers}${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			} else {
-				modifiers = `${this.timeStamp()}${modifiers}`;
+				modifiers = `${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			}
 			console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 			process.stdout.write(color.reset);
@@ -355,9 +354,9 @@ class Printers {
 			}
 			let modifiers: string = `${this.modifier}${this.isDim?color.dimCyan:color.cyan}${this.config.backgroundColors.cyan}`;
 			if (!this.config.cleanTimeStamp) {
-				modifiers = `${modifiers}${this.timeStamp()}`;
+				modifiers = `${modifiers}${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			} else {
-				modifiers = `${this.timeStamp()}${modifiers}`;
+				modifiers = `${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			}
 			console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 			process.stdout.write(color.reset);
@@ -378,9 +377,9 @@ class Printers {
 			}
 			let modifiers: string = `${this.modifier}${this.isDim?color.dimWhite:color.white}${this.config.backgroundColors.white}`;
 			if (!this.config.cleanTimeStamp) {
-				modifiers = `${modifiers}${this.timeStamp()}`;
+				modifiers = `${modifiers}${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			} else {
-				modifiers = `${this.timeStamp()}${modifiers}`;
+				modifiers = `${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			}
 			console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 			process.stdout.write(color.reset);
@@ -401,9 +400,9 @@ class Printers {
 			}
 			let modifiers: string = `${this.modifier}${this.isDim?color.dimGray:color.gray}${this.config.backgroundColors.gray}`;
 			if (!this.config.cleanTimeStamp) {
-				modifiers = `${modifiers}${this.timeStamp()}`;
+				modifiers = `${modifiers}${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			} else {
-				modifiers = `${this.timeStamp()}${modifiers}`;
+				modifiers = `${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			}
 			console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 			process.stdout.write(color.reset);
@@ -433,9 +432,9 @@ class Printers {
 			}
 			let modifiers: string = `${this.modifier}${this.isDim?color.dimPink:color.pink}${this.config.backgroundColors.pink}`;
 			if (!this.config.cleanTimeStamp) {
-				modifiers = `${modifiers}${this.timeStamp()}`;
+				modifiers = `${modifiers}${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			} else {
-				modifiers = `${this.timeStamp()}${modifiers}`;
+				modifiers = `${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			}
 			console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 			process.stdout.write(color.reset);
@@ -456,9 +455,9 @@ class Printers {
 			}
 			let modifiers: string = `${this.modifier}${this.isDim?color.dimOrange:color.orange}${this.config.backgroundColors.orange}`;
 			if (!this.config.cleanTimeStamp) {
-				modifiers = `${modifiers}${this.timeStamp()}`;
+				modifiers = `${modifiers}${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			} else {
-				modifiers = `${this.timeStamp()}${modifiers}`;
+				modifiers = `${this.timeStamp()}${this.config.preAppend}${modifiers}`;
 			}
 			console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
 			process.stdout.write(color.reset);
@@ -586,6 +585,10 @@ class PrintConfig {
 	 */
 	dateOnOff: DATE;
 	/**
+	 * String to pre-append in all `print` calls
+	 */
+	preAppend: string;
+	/**
 	 * The socket, if any, to have the 'console' event triggered every `print.log` call
 	 */
 	socket: Socket | undefined;
@@ -647,6 +650,7 @@ class PrintConfig {
 		this.cleanTimeStamp = false;
 		this.msOnOff = MS.OFF;
 		this.dateOnOff = DATE.OFF;
+		this.preAppend = '';
 		this.verbosity = Verbosity.HIGH;
 		this.backgroundColors = {
 			black: '',
@@ -665,7 +669,7 @@ class PrintConfig {
 
 }
 
-class Print extends Modifiers  {
+export class Print extends Modifiers  {
 	/**
 	 * Print the text on the same line as the current cursor
 	 */
@@ -697,6 +701,14 @@ class Print extends Modifiers  {
 	 */
 	static create() {
 		return new Print(new PrintConfig());
+	}
+
+	/**
+	 * Pre-append a string on all `print` calls
+	 * @param str 
+	 */
+	preAppend(str: string) {
+		this._config_.preAppend = str;
 	}
 
 	/**
