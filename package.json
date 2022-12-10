@@ -1,6 +1,6 @@
 {
   "name": "printaeu",
-  "version": "0.1.10",
+  "version": "0.1.11",
   "description": "Alternative to console.log",
   "main": "printaeu.js",
   "types": "printaeu.d.ts",
