@@ -1,44 +1,32 @@
 /// <reference types="node" />
 import { Socket } from 'dgram';
-/**
- * Possible background colors
- */
+/** Possible background colors */
 export type BackgroundsColors = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white';
 interface Backgrounds {
     name: BackgroundsColors;
     value: string;
 }
-/**
- * The bold modifier
- */
+/** The bold modifier */
 export declare const bold: {
     readonly on: "\u001B[1m";
     readonly off: "\u001B[22m" | "\u001B[21m";
 };
-/**
- * The dim modifier (work on some terminals)
- */
+/** The dim modifier (work on some terminals) */
 export declare const dim: {
     readonly on: "\u001B[2m";
     readonly off: "\u001B[22m";
 };
-/**
- * The italic modifier
- */
+/** The italic modifier */
 export declare const italic: {
     readonly on: "\u001B[3m";
     readonly off: "\u001B[23m";
 };
-/**
- * The underline modifier
- */
+/** The underline modifier */
 export declare const underline: {
     readonly on: "\u001B[4m";
     readonly off: "\u001B[24m";
 };
-/**
- * The reverse modifier
- */
+/** The reverse modifier */
 export declare const reverse: {
     readonly on: "\u001B[7m";
     readonly off: "\u001B[27m";
@@ -76,23 +64,17 @@ declare class ColorModifiers {
     cls: string;
 }
 export declare const color: ColorModifiers;
-/**
- * String offsets to show or hide the milliseconds from the time stamp
- */
+/** String offsets to show or hide the milliseconds from the time stamp */
 declare enum MS {
     ON = -1,
     OFF = -5
 }
-/**
- * String offsets to show or hide the date from the time stamp
- */
+/** String offsets to show or hide the date from the time stamp */
 declare enum DATE {
     ON = 0,
     OFF = 11
 }
-/**
- * Printers options
- */
+/** Printers options */
 interface ColorOptions {
     modifier?: string;
     dim?: boolean;
@@ -196,161 +178,91 @@ declare class Printers {
      */
     private toLog;
 }
-/**
- * Extend Printers to generate modifiers
- */
+/** Extend Printers to generate modifiers */
 declare class Modifiers extends Printers {
-    /**
-     * Show the text brighter. Same as `bold`
-     */
+    /** Show the text brighter. Same as `bold` */
     readonly bright: Printers;
-    /**
-     * Show a bold text. Same as `bright`
-     */
+    /** Show a bold text. Same as `bright` */
     readonly bold: Printers;
-    /**
-     * Show the text in italic
-     */
+    /** Show the text in italic */
     readonly italic: Printers;
-    /**
-     * Show the text dim (a little darker)
-     */
+    /** Show the text dim (a little darker) */
     readonly dim: Printers;
-    /**
-     * @deprecated use `underline` instead. The support to `underscore` will be dropped soon
-     */
+    /** @deprecated use `underline` instead. The support to `underscore` will be dropped soon */
     readonly underscore: Printers;
-    /**
-     * Show the text with an underline
-     */
+    /** Show the text with an underline */
     readonly underline: Printers;
-    /**
-     * Show the text with the foreground and background colors reversed
-     */
+    /** Show the text with the foreground and background colors reversed */
     readonly reverse: Printers;
     constructor(verbosity: Verbosity, config: PrintConfig, inline: boolean);
 }
-/**
- * Verbosity options
- */
+/** Verbosity options */
 export type VerbosityOptions = 'low' | 'medium' | 'high';
-/**
- * Internal verbosity enum
- */
+/** Internal verbosity enum */
 declare enum Verbosity {
     LOW = 0,
     MEDIUM = 1,
     HIGH = 2
 }
-/**
- * High Verbosity class
- */
+/** High Verbosity class */
 declare class HighVerbosity extends Modifiers {
     readonly inline: Modifiers;
     constructor(config: PrintConfig);
 }
-/**
- * Medium verbosity class
- */
+/** Medium verbosity class */
 declare class MediumVerbosity extends Modifiers {
     readonly inline: Modifiers;
     constructor(config: PrintConfig);
 }
-/**
- * Print general configurations
- */
+/** Print general configurations */
 declare class PrintConfig {
-    /**
-     * Flag that stores whether print should show time stamp with the modifiers
-     */
+    /** Flag that stores whether print should show time stamp with the modifiers */
     cleanTimeStamp: boolean;
-    /**
-     * Flag that stores whether print should show until milliseconds
-     */
+    /** Flag that stores whether print should show until milliseconds */
     msOnOff: MS;
-    /**
-     * Flag that stores whether print should show the date
-     */
+    /** Flag that stores whether print should show the date */
     dateOnOff: DATE;
-    /**
-     * String to pre-append in all `print` calls
-     */
+    /** String to pre-append in all `print` calls */
     preAppend: string;
-    /**
-     * The socket, if any, to have the 'console' event triggered every `print.log` call
-     */
+    /** The socket, if any, to have the 'console' event triggered every `print.log` call */
     socket: Socket | undefined;
-    /**
-     * The current print verbosity
-     */
+    /** The current print verbosity */
     verbosity: Verbosity;
-    /**
-     * The current print background color for each available text color
-     */
+    /** The current print background color for each available text color */
     backgroundColors: {
-        /**
-         * The current background color for the black text
-         */
+        /** The current background color for the black text */
         black: string;
-        /**
-         * The current background color for the red text
-         */
+        /** The current background color for the red text */
         red: string;
-        /**
-         * The current background color for the green text
-         */
+        /** The current background color for the green text */
         green: string;
-        /**
-         * The current background color for the yellow text
-         */
+        /** The current background color for the yellow text */
         yellow: string;
-        /**
-         * The current background color for the blue text
-         */
+        /** The current background color for the blue text */
         blue: string;
-        /**
-         * The current background color for the magenta text
-         */
+        /** The current background color for the magenta text */
         magenta: string;
-        /**
-         * The current background color for the cyan text
-         */
+        /** The current background color for the cyan text */
         cyan: string;
-        /**
-         * The current background color for the white text
-         */
+        /** The current background color for the white text */
         white: string;
-        /**
-         * The current background color for the gray text
-         */
+        /** The current background color for the gray text */
         gray: string;
-        /**
-         * The current background color for the pink text
-         */
+        /** The current background color for the pink text */
         pink: string;
-        /**
-         * The current background color for the orange text
-         */
+        /** The current background color for the orange text */
         orange: string;
     };
     constructor();
 }
 export declare class Print extends Modifiers {
-    /**
-     * Print the text on the same line as the current cursor
-     */
+    /** Print the text on the same line as the current cursor */
     readonly inline: Modifiers;
-    /**
-     * Print the text only if the verbosity is set to `high` using `setVerbosity`
-     */
+    /** Print the text only if the verbosity is set to `high` using `setVerbosity` */
     readonly high: HighVerbosity;
-    /**
-     * Print the text only if the verbosity is set to `medium` or higher using `setVerbosity`
-     */
+    /** Print the text only if the verbosity is set to `medium` or higher using `setVerbosity` */
     readonly med: MediumVerbosity;
-    /**
-     * Global print configurations
-     */
+    /** Global print configurations */
     private _config_;
     private constructor();
     /**
@@ -360,7 +272,7 @@ export declare class Print extends Modifiers {
     static create(): Print;
     /**
      * Pre-append a string on all `print` calls
-     * @param str
+     * @param str the string to pre-append
      */
     preAppend(str: string): void;
     /**
@@ -373,9 +285,7 @@ export declare class Print extends Modifiers {
      * @param lines the relative lines to be cleared
      */
     clearLine(lines?: number): void;
-    /**
-     * Clear the console
-     */
+    /** Clear the console */
     clear(): void;
     /**
      * Turns on and off the milliseconds being shown in the time stamp
@@ -402,216 +312,111 @@ export declare class Print extends Modifiers {
      * @param verbosity the new verbosity value
      */
     setVerbosity(verbosity: VerbosityOptions): void;
-    /**
-     * @deprecated use setBG instead. The support for this will be dropped soon
-     */
+    /** @deprecated use setBG instead. The support for this will be dropped soon */
     readonly setBg: {
-        /**
-         * @deprecated use `setBG.black` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `setBG.black` (BG upper case) instead. The support for this will be dropped soon */
         black: (newBg: BackgroundsColors) => void;
-        /**
-         * @deprecated use `setBG.red` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `setBG.red` (BG upper case) instead. The support for this will be dropped soon */
         red: (newBg: BackgroundsColors) => void;
-        /**
-         * @deprecated use `setBG.green` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `setBG.green` (BG upper case) instead. The support for this will be dropped soon */
         green: (newBg: BackgroundsColors) => void;
-        /**
-         * @deprecated use `setBG.yellow` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `setBG.yellow` (BG upper case) instead. The support for this will be dropped soon */
         yellow: (newBg: BackgroundsColors) => void;
-        /**
-         * @deprecated use `setBG.blue` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `setBG.blue` (BG upper case) instead. The support for this will be dropped soon */
         blue: (newBg: BackgroundsColors) => void;
-        /**
-         * @deprecated use `setBG.magenta` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `setBG.magenta` (BG upper case) instead. The support for this will be dropped soon */
         magenta: (newBg: BackgroundsColors) => void;
-        /**
-         * @deprecated use `setBG.cyan` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `setBG.cyan` (BG upper case) instead. The support for this will be dropped soon */
         cyan: (newBg: BackgroundsColors) => void;
-        /**
-         * @deprecated use `setBG.white` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `setBG.white` (BG upper case) instead. The support for this will be dropped soon */
         white: (newBg: BackgroundsColors) => void;
-        /**
-         * @deprecated use `setBG.gray` (BG upper case) instead. The support for this will be dropped soon
-         */
-        gray: (newBg: BackgroundsColors) => void;
-        /**
-         * @deprecated use `setBG.grey` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `setBG.gray` (BG upper case) instead. The support for this will be dropped soon */ gray: (newBg: BackgroundsColors) => void;
+        /** @deprecated use `setBG.grey` (BG upper case) instead. The support for this will be dropped soon */
         grey: (newBg: BackgroundsColors) => void;
-        /**
-         * @deprecated use `setBG.pink` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `setBG.pink` (BG upper case) instead. The support for this will be dropped soon */
         pink: (newBg: BackgroundsColors) => void;
-        /**
-         * @deprecated use `setBG.orange` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `setBG.orange` (BG upper case) instead. The support for this will be dropped soon */
         orange: (newBg: BackgroundsColors) => void;
     };
-    /**
-     * Set the background color for a given printer
-     */
+    /** Set the background color for a given printer */
     readonly setBG: {
-        /**
-         * Set the background color for the `.black` printer
-         */
+        /** Set the background color for the `.black` printer */
         black: (newBg: BackgroundsColors) => void;
-        /**
-         * Set the background color for the `.red` printer
-         */
+        /** Set the background color for the `.red` printer */
         red: (newBg: BackgroundsColors) => void;
-        /**
-         * Set the background color for the `.green` printer
-         */
+        /** Set the background color for the `.green` printer */
         green: (newBg: BackgroundsColors) => void;
-        /**
-         * Set the background color for the `.yellow` printer
-         */
+        /** Set the background color for the `.yellow` printer */
         yellow: (newBg: BackgroundsColors) => void;
-        /**
-         * Set the background color for the `.blue` printer
-         */
+        /** Set the background color for the `.blue` printer */
         blue: (newBg: BackgroundsColors) => void;
-        /**
-         * Set the background color for the `.magenta` printer
-         */
+        /** Set the background color for the `.magenta` printer */
         magenta: (newBg: BackgroundsColors) => void;
-        /**
-         * Set the background color for the `.cyan` printer
-         */
+        /** Set the background color for the `.cyan` printer */
         cyan: (newBg: BackgroundsColors) => void;
-        /**
-         * Set the background color for the `.white` printer
-         */
+        /** Set the background color for the `.white` printer */
         white: (newBg: BackgroundsColors) => void;
-        /**
-         * Set the background color for the `.gray` printer
-         */
+        /** Set the background color for the `.gray` printer */
         gray: (newBg: BackgroundsColors) => void;
-        /**
-         * Set the background color for the `.grey` printer
-         */
+        /** Set the background color for the `.grey` printer */
         grey: (newBg: BackgroundsColors) => void;
-        /**
-         * Set the background color for the `.pink` printer
-         */
+        /** Set the background color for the `.pink` printer */
         pink: (newBg: BackgroundsColors) => void;
-        /**
-         * Set the background color for the `.orange` printer
-         */
+        /** Set the background color for the `.orange` printer */
         orange: (newBg: BackgroundsColors) => void;
     };
-    /**
-     * @deprecated use clearBG instead. The support for this will be dropped soon
-     */
+    /** @deprecated use clearBG instead. The support for this will be dropped soon */
     readonly clear_Bg: {
-        /**
-         * @deprecated use `clearBG.black` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `clearBG.black` (BG upper case) instead. The support for this will be dropped soon */
         black: () => void;
-        /**
-         * @deprecated use `clearBG.red` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `clearBG.red` (BG upper case) instead. The support for this will be dropped soon */
         red: () => void;
-        /**
-         * @deprecated use `clearBG.green` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `clearBG.green` (BG upper case) instead. The support for this will be dropped soon */
         green: () => void;
-        /**
-         * @deprecated use `clearBG.yellow` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `clearBG.yellow` (BG upper case) instead. The support for this will be dropped soon */
         yellow: () => void;
-        /**
-         * @deprecated use `clearBG.blue` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `clearBG.blue` (BG upper case) instead. The support for this will be dropped soon */
         blue: () => void;
-        /**
-         * @deprecated use `clearBG.magenta` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `clearBG.magenta` (BG upper case) instead. The support for this will be dropped soon */
         magenta: () => void;
-        /**
-         * @deprecated use `clearBG.cyan` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `clearBG.cyan` (BG upper case) instead. The support for this will be dropped soon */
         cyan: () => void;
-        /**
-         * @deprecated use `clearBG.white` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `clearBG.white` (BG upper case) instead. The support for this will be dropped soon */
         white: () => void;
-        /**
-         * @deprecated use `clearBG.gray` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `clearBG.gray` (BG upper case) instead. The support for this will be dropped soon */
         gray: () => void;
-        /**
-         * @deprecated use `clearBG.grey` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `clearBG.grey` (BG upper case) instead. The support for this will be dropped soon */
         grey: () => void;
-        /**
-         * @deprecated use `clearBG.pink` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `clearBG.pink` (BG upper case) instead. The support for this will be dropped soon */
         pink: () => void;
-        /**
-         * @deprecated use `clearBG.orange` (BG upper case) instead. The support for this will be dropped soon
-         */
+        /** @deprecated use `clearBG.orange` (BG upper case) instead. The support for this will be dropped soon */
         orange: () => void;
     };
-    /**
-     * Restore the background color for a given printer
-     */
+    /** Restore the background color for a given printer */
     readonly clearBG: {
-        /**
-         * Clear the background color for the `.black` printer
-         */
+        /** Clear the background color for the `.black` printer */
         black: () => void;
-        /**
-         * Clear the background color for the `.red` printer
-         */
+        /** Clear the background color for the `.red` printer */
         red: () => void;
-        /**
-         * Clear the background color for the `.green` printer
-         */
+        /** Clear the background color for the `.green` printer */
         green: () => void;
-        /**
-         * Clear the background color for the `.yellow` printer
-         */
+        /** Clear the background color for the `.yellow` printer */
         yellow: () => void;
-        /**
-         * Clear the background color for the `.blue` printer
-         */
+        /** Clear the background color for the `.blue` printer */
         blue: () => void;
-        /**
-         * Clear the background color for the `.magenta` printer
-         */
+        /** Clear the background color for the `.magenta` printer */
         magenta: () => void;
-        /**
-         * Clear the background color for the `.cyan` printer
-         */
+        /** Clear the background color for the `.cyan` printer */
         cyan: () => void;
-        /**
-         * Clear the background color for the `.white` printer
-         */
+        /** Clear the background color for the `.white` printer */
         white: () => void;
-        /**
-         * Clear the background color for the `.gray` printer
-         */
+        /** Clear the background color for the `.gray` printer */
         gray: () => void;
-        /**
-         * Clear the background color for the `.grey` printer
-         */
+        /** Clear the background color for the `.grey` printer */
         grey: () => void;
-        /**
-         * Clear the background color for the `.pink` printer
-         */
+        /** Clear the background color for the `.pink` printer */
         pink: () => void;
-        /**
-         * Clear the background color for the `.orange` printer
-         */
+        /** Clear the background color for the `.orange` printer */
         orange: () => void;
     };
     /**
