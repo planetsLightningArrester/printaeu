@@ -8,6 +8,7 @@ Time stamp is a must. **Period.**
 - Colorful text
 - Modifiers (bold, italic, underline)
 - Verbosity control
+- File output
 
 ### Install
 `npm i printaeu`
@@ -15,7 +16,7 @@ Time stamp is a must. **Period.**
 ### Usage
 It receives the same parameters of `console.log`.
 
-```JavaScript
+```javascript
 const { print } = require('printaeu');
 
 // All of them has time stamp
@@ -46,7 +47,7 @@ print.underline.magenta(`This will`);
 
 ```
 
-```TypeScript
+```typescript
 // Also works with ES5+
 import { print, italic as i} from 'printaeu';
 
@@ -69,7 +70,7 @@ print.green(`You won't ${i.on}believe${i.off} this!`);
 ### Track errors
 I don't commit errors, but when you do it's better to know where this come from.
 
-```JavaScript
+```javascript
 const { print } = require('printaeu');
 
 function foo () {
@@ -84,10 +85,30 @@ try {
 }
 ```
 
+### File redirection
+Print and logs into a file
+
+```javascript
+const { Print, print } = require('printaeu');
+print.logToFile("/tmp/app.log");
+
+const error = Print.create();
+error.logToFile("/tmp/app.err");
+
+try {
+    foo();
+} catch(e) {
+    print.red('error data will be printed');
+    print.logToFile("/tmp/app.log", false); // stop logging
+    error.track(e); // Like stack error, but beautier
+    print.log('Error printed') // won't be to the log file
+}
+```
+
 ### Not sure?
 Copy, paste and run.
 
-```JavaScript
+```javascript
 const { print } = require('printaeu');
 
 const warningSign = '\u{26a0}',
@@ -118,7 +139,7 @@ setTimeout(() => {print.inline.bright.red('I could be your girlfriend ' + heart 
 
 ### Whole Lib
 
-```JavaScript
+```javascript
 const { print } = require('printaeu');
 
 // All of them has time stamp

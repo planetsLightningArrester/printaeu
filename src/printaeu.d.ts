@@ -89,6 +89,13 @@ declare class Printers {
     private verbosity;
     constructor(verbosity: Verbosity, config: PrintConfig, options: ColorOptions);
     /**
+     * Log everything it's printed into a file. It always append the file and modifiers and `inline` has no effect.
+     * This dramatically impacts performance.
+     * @param filePath the full path to the file to be written
+     * @param log enable or disable the log. Default is `true`
+     */
+    logToFile(filePath: string, log?: boolean): void;
+    /**
      * Create a stamp for the current time
      * @returns the formatted time stamp
      */
@@ -172,7 +179,7 @@ declare class Printers {
      */
     orange(data: any, ...args: any[]): void;
     /**
-     * Instead of printing, the text is logged inside a file with the time stamps
+     * After printing, the text is logged inside a file with the time stamps
      * @param data the data to be logged
      * @param file the log file full path
      */
@@ -253,6 +260,7 @@ declare class PrintConfig {
         /** The current background color for the orange text */
         orange: string;
     };
+    logFiles: string[];
     constructor();
 }
 export declare class Print extends Modifiers {
