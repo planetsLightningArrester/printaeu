@@ -11,10 +11,20 @@ Time stamp is a must. **Period.**
 - File output
 
 ### Install
+
+#### NPM
+
 `npm i printaeu`
+
+#### JSR
+
+`deno install @planets-lightning-arrester/printaeu@0.2.0`
+
 
 ### Usage
 It receives the same parameters of `console.log`.
+
+#### Node/Web
 
 ```javascript
 const { print } = require('printaeu');
@@ -50,6 +60,16 @@ print.underline.magenta(`This will`);
 ```typescript
 // Also works with ES5+
 import { print, italic as i} from 'printaeu';
+
+print.green(`You won't ${i.on}believe${i.off} this!`);
+
+```
+
+### Deno
+
+```typescript
+// Also works with ES5+
+import { print, italic as i } from '@planets-lightning-arrester/printaeu';
 
 print.green(`You won't ${i.on}believe${i.off} this!`);
 
