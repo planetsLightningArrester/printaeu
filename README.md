@@ -18,7 +18,7 @@ Time stamp is a must. **Period.**
 
 #### JSR
 
-`deno install @pla/printaeu@0.2.0`
+`deno add @pla/printaeu`
 
 
 ### Usage

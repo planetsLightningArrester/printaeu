@@ -23,7 +23,7 @@ class Bold extends TextModifiers {
   override readonly off = Deno.build.os === "windows" ? "\x1b[22m" : "\x1b[21m";
 }
 
-/** The bold modifier */
+/** Turns bold text on and off */
 export const bold: Bold = new Bold();
 
 /** The dim class (work on some terminals) */
@@ -32,7 +32,7 @@ class Dim extends TextModifiers {
   override readonly off = "\x1b[22m";
 }
 
-/** The dim modifier (work on some terminals) */
+/** Turns dim text on and off (work on some terminals) */
 export const dim: Dim = new Dim();
 
 /** The italic class */
@@ -41,7 +41,7 @@ class Italic extends TextModifiers {
   override readonly off = "\x1b[23m";
 }
 
-/** The italic modifier */
+/** Turns italic text on and off */
 export const italic: Italic = new Italic();
 
 /** The underline class */
@@ -50,7 +50,7 @@ class Underline extends TextModifiers {
   override readonly off = "\x1b[24m";
 }
 
-/** The underline modifier */
+/** Turns underlined text on and off */
 export const underline: Underline = new Underline();
 
 /** The reverse class */
@@ -59,7 +59,7 @@ class Reverse extends TextModifiers {
   override readonly off = "\x1b[27m";
 }
 
-/** The reverse modifier */
+/** Turns the reversed background on and off */
 export const reverse: Reverse = new Reverse();
 
 class ColorModifiers {
@@ -109,6 +109,11 @@ class ColorModifiers {
   cls: string = "\x1bc";
 }
 
+/**
+ * Manually add colors in the middle of a `print` call
+ *
+ * @example print.preAppend(`${color.reset}[${color.cyan}DB${color.reset}] [${color.yellow}WARN${color.reset}] `);
+ */
 export const color: ColorModifiers = new ColorModifiers();
 
 /** String offsets to show or hide the milliseconds from the time stamp */
@@ -637,6 +642,15 @@ class PrintConfig {
   }
 }
 
+/**
+ * Print class. Call `Print.create()` to create a new printer
+ *
+ * @example
+ * import { Print, color } from '@pla/printaeu'
+ * const warn = Print.create();
+ * warn.preAppend(`${color.reset}[${color.cyan}DATABASE${color.reset}] [${color.yellow}WARN${color.reset}] `);
+ * warn.setColorfulTimeStamp(false);
+ */
 export class Print extends Modifiers {
   /** Print the text on the same line as the current cursor */
   readonly inline: Modifiers;
@@ -1026,15 +1040,22 @@ export class Print extends Modifiers {
   }
 }
 
+/** A default printer */
 export const print: Print = Print.create();
 
 // Some emojis
-export const warning = "\u{26a0}",
-  recycle = "\u{267b}",
-  heart = "\u{2764}",
-  heavy_check_mark = "\u{FE0F}",
-  satellite_antenna = "\u{1F4E1}",
-  no_entry = "\u{26D4}";
+/** A warning emoji (⚠️) */
+export const warning = "\u{26a0}";
+/** A recycle emoji (♻️) */
+export const recycle = "\u{267b}";
+/** A heart emoji (❤️) */
+export const heart = "\u{2764}";
+/** A heavy check mark emoji (✅) */
+export const heavy_check_mark = "\u{FE0F}";
+/** A satellite antenna emoji (📡) */
+export const satellite_antenna = "\u{1F4E1}";
+/** A no entry emoji (⛔) */
+export const no_entry = "\u{26D4}";
 
 /**
  * Retrieve the function from the call stack
