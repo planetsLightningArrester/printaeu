@@ -15,5 +15,12 @@
     "@std/testing": "jsr:@std/testing@1.0.3",
     "@std/path": "jsr:@std/path@1.0.7"
   },
-  "exports": "./src/printaeu.ts"
+  "exports": "./src/printaeu.ts",
+  "publish": {
+    "include": [
+      "./src/printaeu.ts",
+      "./README.md",
+      "./deno.json"
+    ]
+  }
 }
