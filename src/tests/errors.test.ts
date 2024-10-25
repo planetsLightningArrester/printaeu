@@ -1,6 +1,26 @@
-import { print } from "../printaeu.ts";
+import { Print, print } from "../printaeu.ts";
 
-Deno.test(function CheckErrorsThrown() {
+Deno.test(function ErrorTrace() {
+  const print = Print.create();
+  print.logToFile("/tmp/app.log");
+
+  const error = Print.create();
+  error.logToFile("/tmp/app.err");
+
+  try {
+    throw new Error("Error example");
+  } catch (e: unknown) {
+    print.red("error data will be printed");
+    print.logToFile("/tmp/app.log", false);
+    if (e instanceof Error) {
+      error.red(e.message);
+      error.track(e);
+    }
+    print.log("Error printed");
+  }
+});
+
+Deno.test(function TestAll() {
   print.clear();
 
   print.black("black");
@@ -379,9 +399,4 @@ Deno.test(function CheckErrorsThrown() {
   print.cyan("hiiiiiii");
   print.cyan("hiiiiiii2");
   print.bold.cyan("hiiiiiii2");
-
-  // print.toLog('ola', './teste.txt');
-  // print.toLog('nova linha');
-  // print.toLog('nova linha');
-  // print.toLog({locura: 'dado'});
 });
