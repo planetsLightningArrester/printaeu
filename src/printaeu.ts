@@ -1,74 +1,49 @@
-import { Socket } from 'dgram';
-
-import * as readline from "readline";
-import * as fs from "fs";
-
 /** Possible background colors */
-export type BackgroundsColors = 'black' | 'red' | 'green' | 'yellow' | 'blue' | 'magenta' | 'cyan' | 'white';
+export type BackgroundsColors = "black" | "red" | "green" | "yellow" | "blue" | "magenta" | "cyan" | "white";
 
 interface Backgrounds {
   name: BackgroundsColors;
   value: string;
-};
+}
 
 class TextModifiers {
-  /**
-   * Turn on the modifier to be included inside the `print` call
-   * @example 
-   * import { print, bold as b, italic as i, dim as d, underline as u, reverse as r } from 'printaeu'
-   * print.log(`No way I'm gonna do ${b.on()}this${b.off()}`);
-   * print.log(`${i.on()}Believe me, you'll!${i.off()} - he said`);
-   * print.log(`${d.on()}How?${d.off()} - I thought`);
-   * print.log(`Check ${u.on()}this${u.off()} out`);
-   * print.log(`Shot ${r.on}reverse${r.off} shot`);
-   */
-  readonly on: string = '';
-  /**
-   * Turn off the modifier to be included inside the `print` call
-   * @example 
-   * import { print, bold as b, italic as i, dim as d, underline as u, reverse as r } from 'printaeu'
-   * print.log(`No way I'm gonna do ${b.on()}this${b.off()}`);
-   * print.log(`${i.on()}Believe me, you'll!${i.off()} - he said`);
-   * print.log(`${d.on()}How?${d.off()} - I thought`);
-   * print.log(`Check ${u.on()}this${u.off()} out`);
-   * print.log(`Shot ${r.on}reverse${r.off} shot`);
-   */
-  readonly off: string = '';
+  readonly on: string = "";
+  readonly off: string = "";
 }
 
 /** The bold modifier */
 export const bold = new class Bold extends TextModifiers {
-  readonly on = "\x1b[1m";
-  readonly off = process.platform === 'win32' ? "\x1b[22m" : "\x1b[21m";
-};
+  override readonly on = "\x1b[1m";
+  override readonly off = Deno.build.os === "windows" ? "\x1b[22m" : "\x1b[21m";
+}();
 
 /** The dim modifier (work on some terminals) */
 export const dim = new class Dim extends TextModifiers {
-  readonly on = "\x1b[2m";
-  readonly off = "\x1b[22m";
-};
+  override readonly on = "\x1b[2m";
+  override readonly off = "\x1b[22m";
+}();
 
 /** The italic modifier */
 export const italic = new class Italic extends TextModifiers {
-  readonly on = "\x1b[3m";
-  readonly off = "\x1b[23m";
-};
+  override readonly on = "\x1b[3m";
+  override readonly off = "\x1b[23m";
+}();
 
 /** The underline modifier */
 export const underline = new class Underline extends TextModifiers {
-  readonly on = "\x1b[4m";
-  readonly off = "\x1b[24m";
-};
+  override readonly on = "\x1b[4m";
+  override readonly off = "\x1b[24m";
+}();
 
 /** The reverse modifier */
 export const reverse = new class Reverse extends TextModifiers {
-  readonly on = "\x1b[7m";
-  readonly off = "\x1b[27m";
-};
+  override readonly on = "\x1b[7m";
+  override readonly off = "\x1b[27m";
+}();
 
 class ColorModifiers {
   //Modifiers
-  reset: string = '\x1b[0m'; //Reset to default
+  reset: string = "\x1b[0m"; //Reset to default
   bright: string = "\x1b[1m"; //Brighter
   dim: string = "\x1b[2m"; //Dim
   italic: string = "\x1b[3m"; //Italic
@@ -87,7 +62,7 @@ class ColorModifiers {
   pink: string = "\u001b[38;5;213m";
   orange: string = "\u001b[38;5;214m";
 
-  dimBlack: string = "\u001b[38;5;8m";	// Same as gray
+  dimBlack: string = "\u001b[38;5;8m"; // Same as gray
   dimRed: string = "\x1b[31m";
   dimGreen: string = "\x1b[32m";
   dimYellow: string = "\x1b[33m";
@@ -100,17 +75,17 @@ class ColorModifiers {
   dimOrange: string = "\u001b[38;5;208m";
 
   backgrounds: Backgrounds[] = [
-    { name: 'black', value: "\x1b[40m" },
-    { name: 'red', value: "\x1b[41m" },
-    { name: 'green', value: "\x1b[42m" },
-    { name: 'yellow', value: "\x1b[43m" },
-    { name: 'blue', value: "\x1b[44m" },
-    { name: 'magenta', value: "\x1b[45m" },
-    { name: 'cyan', value: "\x1b[46m" },
-    { name: 'white', value: "\x1b[47m" }
-  ]
+    { name: "black", value: "\x1b[40m" },
+    { name: "red", value: "\x1b[41m" },
+    { name: "green", value: "\x1b[42m" },
+    { name: "yellow", value: "\x1b[43m" },
+    { name: "blue", value: "\x1b[44m" },
+    { name: "magenta", value: "\x1b[45m" },
+    { name: "cyan", value: "\x1b[46m" },
+    { name: "white", value: "\x1b[47m" },
+  ];
 
-  cls: string = '\x1bc';
+  cls: string = "\x1bc";
 }
 
 export const color: ColorModifiers = new ColorModifiers();
@@ -118,13 +93,13 @@ export const color: ColorModifiers = new ColorModifiers();
 /** String offsets to show or hide the milliseconds from the time stamp */
 enum MS {
   ON = -1,
-  OFF = -5
+  OFF = -5,
 }
 
 /** String offsets to show or hide the date from the time stamp */
 enum DATE {
   ON = 0,
-  OFF = 11
+  OFF = 11,
 }
 
 /** Printers options */
@@ -134,9 +109,10 @@ interface ColorOptions {
   inline?: boolean;
 }
 
-class Printers {
+const encoder = new TextEncoder();
 
-  private _socket: Socket | undefined;
+class Printers {
+  private _socket: WebSocket | undefined;
   private config: PrintConfig;
   private isInline: boolean;
   private modifier: string;
@@ -144,7 +120,7 @@ class Printers {
   private verbosity: Verbosity;
 
   constructor(verbosity: Verbosity, config: PrintConfig, options: ColorOptions) {
-    this.modifier = options.modifier ? options.modifier : '';
+    this.modifier = options.modifier ? options.modifier : "";
     this.isDim = options.dim ? true : false;
     this.isInline = options.inline ? options.inline : false;
     this.verbosity = verbosity;
@@ -157,10 +133,10 @@ class Printers {
    * @param filePath the full path to the file to be written
    * @param log enable or disable the log. Default is `true`
    */
-  logToFile(filePath: string, log = true) {
-    if (log)
+  logToFile(filePath: string, log = true): void {
+    if (log) {
       this.config.logFiles = this.config.logFiles.includes(filePath) ? this.config.logFiles : [...this.config.logFiles, filePath];
-    else {
+    } else {
       let index: number;
       if ((index = this.config.logFiles.indexOf(filePath)) !== -1) this.config.logFiles.splice(index, 1);
     }
@@ -171,8 +147,8 @@ class Printers {
    * @returns the formatted time stamp
    */
   private timeStamp(): string {
-    let time: string = new Date((new Date()).getTime() - (new Date()).getTimezoneOffset() * 60 * 1000).toISOString();
-    return '[' + time.slice(this.config.dateOnOff, this.config.msOnOff) + '] ';
+    const time: string = new Date((new Date()).getTime() - (new Date()).getTimezoneOffset() * 60 * 1000).toISOString();
+    return "[" + time.slice(this.config.dateOnOff, this.config.msOnOff) + "] ";
   }
 
   /**
@@ -180,12 +156,13 @@ class Printers {
    * @param data same as `console.log()`
    * @param args same as `console.log()`
    */
+  // deno-lint-ignore no-explicit-any
   log(data: any, ...args: any[]): void {
     if (this.config.verbosity >= this.verbosity) {
       if (this.isInline) {
-        readline.cursorTo(process.stdout, 0);
-        readline.moveCursor(process.stdout, 0, -1);
-        readline.clearLine(process.stdout, 0);
+        Deno.stdout.writeSync(encoder.encode("\x1b[0G"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[1A"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[2K"));
       }
       let modifiers: string = this.modifier;
       const timeStamp = this.timeStamp();
@@ -194,24 +171,25 @@ class Printers {
       } else {
         modifiers = `${timeStamp}${this.config.preAppend}${modifiers}`;
       }
-      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
-      if (this.modifier) process.stdout.write(color.reset);
+      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + " ", ""));
+      if (this.modifier) Deno.stdout.writeSync(Uint8Array.from(color.reset, (x) => x.charCodeAt(0)));
       this.toLog(`${timeStamp}${data}`);
-      if (this._socket) this._socket.emit('console', this.timeStamp() + data);
+      if (this._socket) this._socket.send(JSON.stringify({ event: "console", data: this.timeStamp() + data }));
     }
-  };
+  }
 
   /**
    * Print data in black + time stamp
    * @param data same as `console.log()`
    * @param args same as `console.log()`
    */
+  // deno-lint-ignore no-explicit-any
   black(data: any, ...args: any[]): void {
     if (this.config.verbosity >= this.verbosity) {
       if (this.isInline) {
-        readline.cursorTo(process.stdout, 0);
-        readline.moveCursor(process.stdout, 0, -1);
-        readline.clearLine(process.stdout, 0);
+        Deno.stdout.writeSync(encoder.encode("\x1b[0G"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[1A"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[2K"));
       }
       let modifiers: string = `${this.modifier}${this.isDim ? color.dimBlack : color.black}${this.config.backgroundColors.black}`;
       const timeStamp = this.timeStamp();
@@ -220,23 +198,24 @@ class Printers {
       } else {
         modifiers = `${timeStamp}${this.config.preAppend}${modifiers}`;
       }
-      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
-      process.stdout.write(color.reset);
+      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + " ", ""));
+      Deno.stdout.writeSync(Uint8Array.from(color.reset, (x) => x.charCodeAt(0)));
       this.toLog(`${timeStamp}${data}`);
     }
-  };
+  }
 
   /**
    * Print data in red + time stamp
    * @param data same as `console.log()`
    * @param args same as `console.log()`
    */
+  // deno-lint-ignore no-explicit-any
   red(data: any, ...args: any[]): void {
     if (this.config.verbosity >= this.verbosity) {
       if (this.isInline) {
-        readline.cursorTo(process.stdout, 0);
-        readline.moveCursor(process.stdout, 0, -1);
-        readline.clearLine(process.stdout, 0);
+        Deno.stdout.writeSync(encoder.encode("\x1b[0G"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[1A"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[2K"));
       }
       let modifiers: string = `${this.modifier}${this.isDim ? color.dimRed : color.red}${this.config.backgroundColors.red}`;
       const timeStamp = this.timeStamp();
@@ -245,23 +224,24 @@ class Printers {
       } else {
         modifiers = `${timeStamp}${this.config.preAppend}${modifiers}`;
       }
-      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
-      process.stdout.write(color.reset);
+      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + " ", ""));
+      Deno.stdout.writeSync(Uint8Array.from(color.reset, (x) => x.charCodeAt(0)));
       this.toLog(`${timeStamp}${data}`);
     }
-  };
+  }
 
   /**
    * Print data in green + time stamp
    * @param data same as `console.log()`
    * @param args same as `console.log()`
    */
+  // deno-lint-ignore no-explicit-any
   green(data: any, ...args: any[]): void {
     if (this.config.verbosity >= this.verbosity) {
       if (this.isInline) {
-        readline.cursorTo(process.stdout, 0);
-        readline.moveCursor(process.stdout, 0, -1);
-        readline.clearLine(process.stdout, 0);
+        Deno.stdout.writeSync(encoder.encode("\x1b[0G"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[1A"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[2K"));
       }
       let modifiers: string = `${this.modifier}${this.isDim ? color.dimGreen : color.green}${this.config.backgroundColors.green}`;
       const timeStamp = this.timeStamp();
@@ -270,23 +250,24 @@ class Printers {
       } else {
         modifiers = `${timeStamp}${this.config.preAppend}${modifiers}`;
       }
-      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
-      process.stdout.write(color.reset);
+      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + " ", ""));
+      Deno.stdout.writeSync(Uint8Array.from(color.reset, (x) => x.charCodeAt(0)));
       this.toLog(`${timeStamp}${data}`);
     }
-  };
+  }
 
   /**
    * Print data in yellow + time stamp
    * @param data same as `console.log()`
    * @param args same as `console.log()`
    */
+  // deno-lint-ignore no-explicit-any
   yellow(data: any, ...args: any[]): void {
     if (this.config.verbosity >= this.verbosity) {
       if (this.isInline) {
-        readline.cursorTo(process.stdout, 0);
-        readline.moveCursor(process.stdout, 0, -1);
-        readline.clearLine(process.stdout, 0);
+        Deno.stdout.writeSync(encoder.encode("\x1b[0G"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[1A"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[2K"));
       }
       let modifiers: string = `${this.modifier}${this.isDim ? color.dimYellow : color.yellow}${this.config.backgroundColors.yellow}`;
       const timeStamp = this.timeStamp();
@@ -295,23 +276,24 @@ class Printers {
       } else {
         modifiers = `${timeStamp}${this.config.preAppend}${modifiers}`;
       }
-      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
-      process.stdout.write(color.reset);
+      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + " ", ""));
+      Deno.stdout.writeSync(Uint8Array.from(color.reset, (x) => x.charCodeAt(0)));
       this.toLog(`${timeStamp}${data}`);
     }
-  };
+  }
 
   /**
    * Print data in blue + time stamp
    * @param data same as `console.log()`
    * @param args same as `console.log()`
    */
+  // deno-lint-ignore no-explicit-any
   blue(data: any, ...args: any[]): void {
     if (this.config.verbosity >= this.verbosity) {
       if (this.isInline) {
-        readline.cursorTo(process.stdout, 0);
-        readline.moveCursor(process.stdout, 0, -1);
-        readline.clearLine(process.stdout, 0);
+        Deno.stdout.writeSync(encoder.encode("\x1b[0G"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[1A"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[2K"));
       }
       let modifiers: string = `${this.modifier}${this.isDim ? color.dimBlue : color.blue}${this.config.backgroundColors.blue}`;
       const timeStamp = this.timeStamp();
@@ -320,23 +302,24 @@ class Printers {
       } else {
         modifiers = `${timeStamp}${this.config.preAppend}${modifiers}`;
       }
-      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
-      process.stdout.write(color.reset);
+      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + " ", ""));
+      Deno.stdout.writeSync(Uint8Array.from(color.reset, (x) => x.charCodeAt(0)));
       this.toLog(`${timeStamp}${data}`);
     }
-  };
+  }
 
   /**
    * Print data in magenta + time stamp
    * @param data same as `console.log()`
    * @param args same as `console.log()`
    */
+  // deno-lint-ignore no-explicit-any
   magenta(data: any, ...args: any[]): void {
     if (this.config.verbosity >= this.verbosity) {
       if (this.isInline) {
-        readline.cursorTo(process.stdout, 0);
-        readline.moveCursor(process.stdout, 0, -1);
-        readline.clearLine(process.stdout, 0);
+        Deno.stdout.writeSync(encoder.encode("\x1b[0G"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[1A"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[2K"));
       }
       let modifiers: string = `${this.modifier}${this.isDim ? color.dimMagenta : color.magenta}${this.config.backgroundColors.magenta}`;
       const timeStamp = this.timeStamp();
@@ -345,23 +328,24 @@ class Printers {
       } else {
         modifiers = `${timeStamp}${this.config.preAppend}${modifiers}`;
       }
-      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
-      process.stdout.write(color.reset);
+      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + " ", ""));
+      Deno.stdout.writeSync(Uint8Array.from(color.reset, (x) => x.charCodeAt(0)));
       this.toLog(`${timeStamp}${data}`);
     }
-  };
+  }
 
   /**
    * Print data in cyan + time stamp
    * @param data same as `console.log()`
    * @param args same as `console.log()`
    */
+  // deno-lint-ignore no-explicit-any
   cyan(data: any, ...args: any[]): void {
     if (this.config.verbosity >= this.verbosity) {
       if (this.isInline) {
-        readline.cursorTo(process.stdout, 0);
-        readline.moveCursor(process.stdout, 0, -1);
-        readline.clearLine(process.stdout, 0);
+        Deno.stdout.writeSync(encoder.encode("\x1b[0G"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[1A"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[2K"));
       }
       let modifiers: string = `${this.modifier}${this.isDim ? color.dimCyan : color.cyan}${this.config.backgroundColors.cyan}`;
       const timeStamp = this.timeStamp();
@@ -370,23 +354,24 @@ class Printers {
       } else {
         modifiers = `${timeStamp}${this.config.preAppend}${modifiers}`;
       }
-      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
-      process.stdout.write(color.reset);
+      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + " ", ""));
+      Deno.stdout.writeSync(Uint8Array.from(color.reset, (x) => x.charCodeAt(0)));
       this.toLog(`${timeStamp}${data}`);
     }
-  };
+  }
 
   /**
    * Print data in white + time stamp
    * @param data same as `console.log()`
    * @param args same as `console.log()`
    */
+  // deno-lint-ignore no-explicit-any
   white(data: any, ...args: any[]): void {
     if (this.config.verbosity >= this.verbosity) {
       if (this.isInline) {
-        readline.cursorTo(process.stdout, 0);
-        readline.moveCursor(process.stdout, 0, -1);
-        readline.clearLine(process.stdout, 0);
+        Deno.stdout.writeSync(encoder.encode("\x1b[0G"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[1A"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[2K"));
       }
       let modifiers: string = `${this.modifier}${this.isDim ? color.dimWhite : color.white}${this.config.backgroundColors.white}`;
       const timeStamp = this.timeStamp();
@@ -395,23 +380,24 @@ class Printers {
       } else {
         modifiers = `${timeStamp}${this.config.preAppend}${modifiers}`;
       }
-      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
-      process.stdout.write(color.reset);
+      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + " ", ""));
+      Deno.stdout.writeSync(Uint8Array.from(color.reset, (x) => x.charCodeAt(0)));
       this.toLog(`${timeStamp}${data}`);
     }
-  };
+  }
 
   /**
    * Print data in gray + time stamp
    * @param data same as `console.log()`
    * @param args same as `console.log()`
    */
+  // deno-lint-ignore no-explicit-any
   gray(data: any, ...args: any[]): void {
     if (this.config.verbosity >= this.verbosity) {
       if (this.isInline) {
-        readline.cursorTo(process.stdout, 0);
-        readline.moveCursor(process.stdout, 0, -1);
-        readline.clearLine(process.stdout, 0);
+        Deno.stdout.writeSync(encoder.encode("\x1b[0G"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[1A"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[2K"));
       }
       let modifiers: string = `${this.modifier}${this.isDim ? color.dimGray : color.gray}${this.config.backgroundColors.gray}`;
       const timeStamp = this.timeStamp();
@@ -420,32 +406,34 @@ class Printers {
       } else {
         modifiers = `${timeStamp}${this.config.preAppend}${modifiers}`;
       }
-      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
-      process.stdout.write(color.reset);
+      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + " ", ""));
+      Deno.stdout.writeSync(Uint8Array.from(color.reset, (x) => x.charCodeAt(0)));
       this.toLog(`${timeStamp}${data}`);
     }
-  };
+  }
 
   /**
    * Print data in grey + time stamp
    * @param data same as `console.log()`
    * @param args same as `console.log()`
    */
+  // deno-lint-ignore no-explicit-any
   grey(data: any, ...args: any[]): void {
     this.gray(data, args);
-  };
+  }
 
   /**
    * Print data in pink + time stamp
    * @param data same as `console.log()`
    * @param args same as `console.log()`
    */
+  // deno-lint-ignore no-explicit-any
   pink(data: any, ...args: any[]): void {
     if (this.config.verbosity >= this.verbosity) {
       if (this.isInline) {
-        readline.cursorTo(process.stdout, 0);
-        readline.moveCursor(process.stdout, 0, -1);
-        readline.clearLine(process.stdout, 0);
+        Deno.stdout.writeSync(encoder.encode("\x1b[0G"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[1A"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[2K"));
       }
       let modifiers: string = `${this.modifier}${this.isDim ? color.dimPink : color.pink}${this.config.backgroundColors.pink}`;
       const timeStamp = this.timeStamp();
@@ -454,23 +442,24 @@ class Printers {
       } else {
         modifiers = `${timeStamp}${this.config.preAppend}${modifiers}`;
       }
-      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
-      process.stdout.write(color.reset);
+      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + " ", ""));
+      Deno.stdout.writeSync(Uint8Array.from(color.reset, (x) => x.charCodeAt(0)));
       this.toLog(`${timeStamp}${data}`);
     }
-  };
+  }
 
   /**
    * Print data in orange + time stamp
    * @param data same as `console.log()`
    * @param args same as `console.log()`
    */
+  // deno-lint-ignore no-explicit-any
   orange(data: any, ...args: any[]): void {
     if (this.config.verbosity >= this.verbosity) {
       if (this.isInline) {
-        readline.cursorTo(process.stdout, 0);
-        readline.moveCursor(process.stdout, 0, -1);
-        readline.clearLine(process.stdout, 0);
+        Deno.stdout.writeSync(encoder.encode("\x1b[0G"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[1A"));
+        Deno.stdout.writeSync(encoder.encode("\x1b[2K"));
       }
       let modifiers: string = `${this.modifier}${this.isDim ? color.dimOrange : color.orange}${this.config.backgroundColors.orange}`;
       const timeStamp = this.timeStamp();
@@ -479,32 +468,32 @@ class Printers {
       } else {
         modifiers = `${timeStamp}${this.config.preAppend}${modifiers}`;
       }
-      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + ' ', ''));
-      process.stdout.write(color.reset);
+      console.log(`${modifiers}${data}`, args.reduce((t, e) => t + e + " ", ""));
+      Deno.stdout.writeSync(Uint8Array.from(color.reset, (x) => x.charCodeAt(0)));
       this.toLog(`${timeStamp}${data}`);
     }
-  };
+  }
 
   /**
    * After printing, the text is logged inside a file with the time stamps
    * @param data the data to be logged
    * @param file the log file full path
    */
+  // deno-lint-ignore no-explicit-any
   private toLog(data: any | any[]): void {
     if (!this.config.logFiles.length) return;
     if (!Array.isArray(data)) data = [data];
 
-    let text = '';
+    let text = "";
+    // deno-lint-ignore no-explicit-any
     data.forEach((el: any) => {
-      if (typeof el === 'object') text += JSON.stringify(el) + '\n';
-      else text += el + '\n';
+      if (typeof el === "object") text += JSON.stringify(el) + "\n";
+      else text += el + "\n";
     });
 
-    this.config.logFiles.forEach(file => fs.appendFileSync(file, text));
-
-  };
-
-};
+    this.config.logFiles.forEach((file) => Deno.writeTextFileSync(file, text, { create: true, append: true }));
+  }
+}
 
 /** Extend Printers to generate modifiers */
 class Modifiers extends Printers {
@@ -536,13 +525,13 @@ class Modifiers extends Printers {
 }
 
 /** Verbosity options */
-export type VerbosityOptions = 'low' | 'medium' | 'high';
+export type VerbosityOptions = "low" | "medium" | "high";
 
 /** Internal verbosity enum */
 enum Verbosity {
   LOW,
   MEDIUM,
-  HIGH
+  HIGH,
 }
 
 /** High Verbosity class */
@@ -574,7 +563,7 @@ class PrintConfig {
   /** String to pre-append in all `print` calls */
   preAppend: string;
   /** The socket, if any, to have the 'console' event triggered every `print.log` call */
-  socket: Socket | undefined;
+  socket: WebSocket | undefined;
   /** The current print verbosity */
   verbosity: Verbosity;
   /** The current print background color for each available text color */
@@ -601,31 +590,30 @@ class PrintConfig {
     pink: string;
     /** The current background color for the orange text */
     orange: string;
-  }
+  };
   logFiles: string[];
 
   constructor() {
     this.cleanTimeStamp = false;
     this.msOnOff = MS.OFF;
     this.dateOnOff = DATE.OFF;
-    this.preAppend = '';
+    this.preAppend = "";
     this.verbosity = Verbosity.HIGH;
     this.backgroundColors = {
-      black: '',
-      red: '',
-      green: '',
-      yellow: '',
-      blue: '',
-      magenta: '',
-      cyan: '',
-      white: '',
-      gray: '',
-      pink: '',
-      orange: ''
-    }
+      black: "",
+      red: "",
+      green: "",
+      yellow: "",
+      blue: "",
+      magenta: "",
+      cyan: "",
+      white: "",
+      gray: "",
+      pink: "",
+      orange: "",
+    };
     this.logFiles = [];
   }
-
 }
 
 export class Print extends Modifiers {
@@ -667,25 +655,25 @@ export class Print extends Modifiers {
    * @param lines the number of lines from the cursor current position
    */
   goBacknLines(lines: number): void {
-    readline.cursorTo(process.stdout, 0);
-    readline.moveCursor(process.stdout, 0, -lines);
-    readline.clearLine(process.stdout, 0);
-  };
+    Deno.stdout.writeSync(encoder.encode("\x1b[0G"));
+    Deno.stdout.writeSync(encoder.encode(`\x1b[${lines > 0 ? lines : -lines}${lines > 0 ? "B" : "A"}`)); // B for down, A for up
+    Deno.stdout.writeSync(encoder.encode("\x1b[2K"));
+  }
 
   /**
    * Clear a certain number of lines above the cursor
    * @param lines the relative lines to be cleared
    */
   clearLine(lines: number = 0): void {
-    readline.cursorTo(process.stdout, 0);
-    readline.moveCursor(process.stdout, 0, -lines);
-    readline.clearLine(process.stdout, 0);
-  };
+    Deno.stdout.writeSync(encoder.encode("\x1b[0G"));
+    Deno.stdout.writeSync(encoder.encode(`\x1b[${lines > 0 ? lines : -lines}${lines > 0 ? "B" : "A"}`)); // B for down, A for up
+    Deno.stdout.writeSync(encoder.encode("\x1b[2K"));
+  }
 
   /** Clear the console */
   clear(): void {
-    process.stdout.write(color.cls);
-  };
+    Deno.stdout.writeSync(Uint8Array.from(color.cls, (x) => x.charCodeAt(0)));
+  }
 
   /**
    * Turns on and off the milliseconds being shown in the time stamp
@@ -697,7 +685,7 @@ export class Print extends Modifiers {
     } else {
       this._config_.msOnOff = MS.OFF;
     }
-  };
+  }
 
   /**
    * Turns on and off the date being shown in the time stamp
@@ -709,7 +697,7 @@ export class Print extends Modifiers {
     } else {
       this._config_.dateOnOff = DATE.OFF;
     }
-  };
+  }
 
   /**
    * Whether print should show time stamp with the modifiers (colors, bold, etc...)
@@ -727,19 +715,18 @@ export class Print extends Modifiers {
    * @param error the `Error` object
    */
   track(error: Error): void {
+    let traceResult = "";
+    this.bright.red("Error trace: ");
 
-    let traceResult = '';
-    this.bright.red('Error trace: ');
-
-    if (typeof error.stack !== 'undefined') {
-      let calls = error.stack.toString().split("\n");
+    if (typeof error.stack !== "undefined") {
+      const calls = error.stack.toString().split("\n");
       let index = 0;
 
       for (let i = calls.length - 1; i > 0; i--) {
         const call = calls[i];
 
-        let functionName = getFunctionName(call);
-        let fileName = getFileName(call);
+        const functionName = getFunctionName(call);
+        const fileName = getFileName(call);
 
         if (!index) {
           traceResult += `${color.bright}${color.white}[call] ${color.reset}${functionName}(${fileName})\n`;
@@ -754,9 +741,9 @@ export class Print extends Modifiers {
       }
       this.log(traceResult);
     } else {
-      this.bright.orange('No error trace!');
+      this.bright.orange("No error trace!");
     }
-  };
+  }
 
   /**
    * Change the verbosity of `Print`. The verbosity affects only `print.low`,
@@ -765,13 +752,13 @@ export class Print extends Modifiers {
    */
   setVerbosity(verbosity: VerbosityOptions) {
     switch (verbosity) {
-      case 'high':
+      case "high":
         this._config_.verbosity = Verbosity.HIGH;
         break;
-      case 'medium':
+      case "medium":
         this._config_.verbosity = Verbosity.MEDIUM;
         break;
-      case 'low':
+      case "low":
         this._config_.verbosity = Verbosity.LOW;
         break;
       default:
@@ -783,46 +770,46 @@ export class Print extends Modifiers {
   readonly setBg = {
     /** @deprecated use `setBG.black` (BG upper case) instead. The support for this will be dropped soon */
     black: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.black = newCode.value;
     },
     /** @deprecated use `setBG.red` (BG upper case) instead. The support for this will be dropped soon */
     red: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.red = newCode.value;
     },
     /** @deprecated use `setBG.green` (BG upper case) instead. The support for this will be dropped soon */
     green: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.green = newCode.value;
     },
     /** @deprecated use `setBG.yellow` (BG upper case) instead. The support for this will be dropped soon */
     yellow: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.yellow = newCode.value;
     },
     /** @deprecated use `setBG.blue` (BG upper case) instead. The support for this will be dropped soon */
     blue: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.blue = newCode.value;
     },
     /** @deprecated use `setBG.magenta` (BG upper case) instead. The support for this will be dropped soon */
     magenta: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.magenta = newCode.value;
     },
     /** @deprecated use `setBG.cyan` (BG upper case) instead. The support for this will be dropped soon */
     cyan: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.cyan = newCode.value;
     },
     /** @deprecated use `setBG.white` (BG upper case) instead. The support for this will be dropped soon */
     white: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.white = newCode.value;
     },
-		/** @deprecated use `setBG.gray` (BG upper case) instead. The support for this will be dropped soon */ gray: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+    /** @deprecated use `setBG.gray` (BG upper case) instead. The support for this will be dropped soon */ gray: (newBg: BackgroundsColors): void => {
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.gray = newCode.value;
     },
     /** @deprecated use `setBG.grey` (BG upper case) instead. The support for this will be dropped soon */
@@ -831,61 +818,61 @@ export class Print extends Modifiers {
     },
     /** @deprecated use `setBG.pink` (BG upper case) instead. The support for this will be dropped soon */
     pink: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.pink = newCode.value;
     },
     /** @deprecated use `setBG.orange` (BG upper case) instead. The support for this will be dropped soon */
     orange: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.orange = newCode.value;
-    }
+    },
   };
 
   /** Set the background color for a given printer */
   readonly setBG = {
     /** Set the background color for the `.black` printer */
     black: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.black = newCode.value;
     },
     /** Set the background color for the `.red` printer */
     red: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.red = newCode.value;
     },
     /** Set the background color for the `.green` printer */
     green: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.green = newCode.value;
     },
     /** Set the background color for the `.yellow` printer */
     yellow: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.yellow = newCode.value;
     },
     /** Set the background color for the `.blue` printer */
     blue: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.blue = newCode.value;
     },
     /** Set the background color for the `.magenta` printer */
     magenta: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.magenta = newCode.value;
     },
     /** Set the background color for the `.cyan` printer */
     cyan: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.cyan = newCode.value;
     },
     /** Set the background color for the `.white` printer */
     white: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.white = newCode.value;
     },
     /** Set the background color for the `.gray` printer */
     gray: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.gray = newCode.value;
     },
     /** Set the background color for the `.grey` printer */
@@ -894,118 +881,118 @@ export class Print extends Modifiers {
     },
     /** Set the background color for the `.pink` printer */
     pink: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.pink = newCode.value;
     },
     /** Set the background color for the `.orange` printer */
     orange: (newBg: BackgroundsColors): void => {
-      const newCode = color.backgrounds.find(el => el.name === newBg);
+      const newCode = color.backgrounds.find((el) => el.name === newBg);
       if (newCode) this._config_.backgroundColors.orange = newCode.value;
-    }
+    },
   };
 
   /** @deprecated use clearBG instead. The support for this will be dropped soon */
   readonly clear_Bg = {
     /** @deprecated use `clearBG.black` (BG upper case) instead. The support for this will be dropped soon */
     black: (): void => {
-      this._config_.backgroundColors.black = '';
+      this._config_.backgroundColors.black = "";
     },
     /** @deprecated use `clearBG.red` (BG upper case) instead. The support for this will be dropped soon */
     red: (): void => {
-      this._config_.backgroundColors.red = '';
+      this._config_.backgroundColors.red = "";
     },
     /** @deprecated use `clearBG.green` (BG upper case) instead. The support for this will be dropped soon */
     green: (): void => {
-      this._config_.backgroundColors.green = '';
+      this._config_.backgroundColors.green = "";
     },
     /** @deprecated use `clearBG.yellow` (BG upper case) instead. The support for this will be dropped soon */
     yellow: (): void => {
-      this._config_.backgroundColors.yellow = '';
+      this._config_.backgroundColors.yellow = "";
     },
     /** @deprecated use `clearBG.blue` (BG upper case) instead. The support for this will be dropped soon */
     blue: (): void => {
-      this._config_.backgroundColors.blue = '';
+      this._config_.backgroundColors.blue = "";
     },
     /** @deprecated use `clearBG.magenta` (BG upper case) instead. The support for this will be dropped soon */
     magenta: (): void => {
-      this._config_.backgroundColors.magenta = '';
+      this._config_.backgroundColors.magenta = "";
     },
     /** @deprecated use `clearBG.cyan` (BG upper case) instead. The support for this will be dropped soon */
     cyan: (): void => {
-      this._config_.backgroundColors.cyan = '';
+      this._config_.backgroundColors.cyan = "";
     },
     /** @deprecated use `clearBG.white` (BG upper case) instead. The support for this will be dropped soon */
     white: (): void => {
-      this._config_.backgroundColors.white = '';
+      this._config_.backgroundColors.white = "";
     },
     /** @deprecated use `clearBG.gray` (BG upper case) instead. The support for this will be dropped soon */
     gray: (): void => {
-      this._config_.backgroundColors.gray = '';
+      this._config_.backgroundColors.gray = "";
     },
     /** @deprecated use `clearBG.grey` (BG upper case) instead. The support for this will be dropped soon */
     grey: (): void => {
-      this._config_.backgroundColors.gray = '';
+      this._config_.backgroundColors.gray = "";
     },
     /** @deprecated use `clearBG.pink` (BG upper case) instead. The support for this will be dropped soon */
     pink: (): void => {
-      this._config_.backgroundColors.pink = '';
+      this._config_.backgroundColors.pink = "";
     },
     /** @deprecated use `clearBG.orange` (BG upper case) instead. The support for this will be dropped soon */
     orange: (): void => {
-      this._config_.backgroundColors.orange = '';
-    }
+      this._config_.backgroundColors.orange = "";
+    },
   };
 
   /** Restore the background color for a given printer */
   readonly clearBG = {
     /** Clear the background color for the `.black` printer */
     black: (): void => {
-      this._config_.backgroundColors.black = '';
+      this._config_.backgroundColors.black = "";
     },
     /** Clear the background color for the `.red` printer */
     red: (): void => {
-      this._config_.backgroundColors.red = '';
+      this._config_.backgroundColors.red = "";
     },
     /** Clear the background color for the `.green` printer */
     green: (): void => {
-      this._config_.backgroundColors.green = '';
+      this._config_.backgroundColors.green = "";
     },
     /** Clear the background color for the `.yellow` printer */
     yellow: (): void => {
-      this._config_.backgroundColors.yellow = '';
+      this._config_.backgroundColors.yellow = "";
     },
     /** Clear the background color for the `.blue` printer */
     blue: (): void => {
-      this._config_.backgroundColors.blue = '';
+      this._config_.backgroundColors.blue = "";
     },
     /** Clear the background color for the `.magenta` printer */
     magenta: (): void => {
-      this._config_.backgroundColors.magenta = '';
+      this._config_.backgroundColors.magenta = "";
     },
     /** Clear the background color for the `.cyan` printer */
     cyan: (): void => {
-      this._config_.backgroundColors.cyan = '';
+      this._config_.backgroundColors.cyan = "";
     },
     /** Clear the background color for the `.white` printer */
     white: (): void => {
-      this._config_.backgroundColors.white = '';
+      this._config_.backgroundColors.white = "";
     },
     /** Clear the background color for the `.gray` printer */
     gray: (): void => {
-      this._config_.backgroundColors.gray = '';
+      this._config_.backgroundColors.gray = "";
     },
     /** Clear the background color for the `.grey` printer */
     grey: (): void => {
-      this._config_.backgroundColors.gray = '';
+      this._config_.backgroundColors.gray = "";
     },
     /** Clear the background color for the `.pink` printer */
     pink: (): void => {
-      this._config_.backgroundColors.pink = '';
+      this._config_.backgroundColors.pink = "";
     },
     /** Clear the background color for the `.orange` printer */
     orange: (): void => {
-      this._config_.backgroundColors.orange = '';
-    }
+      this._config_.backgroundColors.orange = "";
+    },
   };
 
   /**
@@ -1013,21 +1000,20 @@ export class Print extends Modifiers {
    * The message is sent with the time stamp.
    * @param socket the socket to be used
    */
-  socket(socket: Socket) {
+  socket(socket: WebSocket) {
     this._config_.socket = socket;
-  };
-
-};
+  }
+}
 
 export const print = Print.create();
 
 // Some emojis
-export const warning = '\u{26a0}',
-  recycle = '\u{267b}',
-  heart = '\u{2764}',
-  heavy_check_mark = '\u{FE0F}',
-  satellite_antenna = '\u{1F4E1}',
-  no_entry = '\u{26D4}';
+export const warning = "\u{26a0}",
+  recycle = "\u{267b}",
+  heart = "\u{2764}",
+  heavy_check_mark = "\u{FE0F}",
+  satellite_antenna = "\u{1F4E1}",
+  no_entry = "\u{26D4}";
 
 /**
  * Retrieve the function from the call stack
@@ -1035,7 +1021,7 @@ export const warning = '\u{26a0}',
  * @returns the function on the call stack
  */
 function getFunctionName(call: string): string {
-  return call.slice(call.indexOf('at ') + 3, call.indexOf(' ('));
+  return call.slice(call.indexOf("at ") + 3, call.indexOf(" ("));
 }
 
 /**
@@ -1045,11 +1031,11 @@ function getFunctionName(call: string): string {
  */
 function getFileName(call: string): string {
   let split: string[];
-  if (call.includes('\\')) {
-    split = call.split('\\');
+  if (call.includes("\\")) {
+    split = call.split("\\");
   } else {
-    split = call.split('/');
+    split = call.split("/");
   }
 
-  return split[split.length - 1].replace(')', '');
+  return split[split.length - 1].replace(")", "");
 }

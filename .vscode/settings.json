@@ -1,0 +1,13 @@
+{
+    "[typescript]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnPaste": true
+    },
+    "[json]": {
+        "editor.formatOnSave": true,
+        "editor.formatOnPaste": true
+    },
+    "cSpell.words": [
+        "printaeu"
+    ]
+}
