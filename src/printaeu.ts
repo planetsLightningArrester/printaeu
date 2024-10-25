@@ -1,45 +1,66 @@
 /** Possible background colors */
 export type BackgroundsColors = "black" | "red" | "green" | "yellow" | "blue" | "magenta" | "cyan" | "white";
 
+/** The text modifier on/off class */
 interface Backgrounds {
+  /** The Background name */
   name: BackgroundsColors;
+  /** The Background code value */
   value: string;
 }
 
+/** The text modifier on/off class */
 class TextModifiers {
+  /** Turn the modifier ON */
   readonly on: string = "";
+  /** Turn the modifier OFF */
   readonly off: string = "";
 }
 
-/** The bold modifier */
-export const bold = new class Bold extends TextModifiers {
+/** The bold class */
+class Bold extends TextModifiers {
   override readonly on = "\x1b[1m";
   override readonly off = Deno.build.os === "windows" ? "\x1b[22m" : "\x1b[21m";
-}();
+}
 
-/** The dim modifier (work on some terminals) */
-export const dim = new class Dim extends TextModifiers {
+/** The bold modifier */
+export const bold: Bold = new Bold();
+
+/** The dim class (work on some terminals) */
+class Dim extends TextModifiers {
   override readonly on = "\x1b[2m";
   override readonly off = "\x1b[22m";
-}();
+}
 
-/** The italic modifier */
-export const italic = new class Italic extends TextModifiers {
+/** The dim modifier (work on some terminals) */
+export const dim: Dim = new Dim();
+
+/** The italic class */
+class Italic extends TextModifiers {
   override readonly on = "\x1b[3m";
   override readonly off = "\x1b[23m";
-}();
+}
 
-/** The underline modifier */
-export const underline = new class Underline extends TextModifiers {
+/** The italic modifier */
+export const italic: Italic = new Italic();
+
+/** The underline class */
+class Underline extends TextModifiers {
   override readonly on = "\x1b[4m";
   override readonly off = "\x1b[24m";
-}();
+}
 
-/** The reverse modifier */
-export const reverse = new class Reverse extends TextModifiers {
+/** The underline modifier */
+export const underline: Underline = new Underline();
+
+/** The reverse class */
+class Reverse extends TextModifiers {
   override readonly on = "\x1b[7m";
   override readonly off = "\x1b[27m";
-}();
+}
+
+/** The reverse modifier */
+export const reverse: Reverse = new Reverse();
 
 class ColorModifiers {
   //Modifiers
@@ -638,7 +659,7 @@ export class Print extends Modifiers {
    * Creates an awesome print object
    * @returns awesomeness
    */
-  static create() {
+  static create(): Print {
     return new Print(new PrintConfig());
   }
 
@@ -1005,7 +1026,7 @@ export class Print extends Modifiers {
   }
 }
 
-export const print = Print.create();
+export const print: Print = Print.create();
 
 // Some emojis
 export const warning = "\u{26a0}",
