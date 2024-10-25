@@ -1,5 +1,5 @@
 {
-  "name": "@planets-lightning-arrester/printaeu",
+  "name": "@pla/printaeu",
   "tasks": {
     "test": "deno test --clean --coverage=coverage/cov_profile --allow-write --allow-read --trace-leaks",
     "test-watch": "deno test --watch --allow-write --allow-read --trace-leaks src/printaeu_test.ts",

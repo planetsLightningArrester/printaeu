@@ -18,7 +18,7 @@ Time stamp is a must. **Period.**
 
 #### JSR
 
-`deno install @planets-lightning-arrester/printaeu@0.2.0`
+`deno install @pla/printaeu@0.2.0`
 
 
 ### Usage
@@ -69,7 +69,7 @@ print.green(`You won't ${i.on}believe${i.off} this!`);
 
 ```typescript
 // Also works with ES5+
-import { print, italic as i } from '@planets-lightning-arrester/printaeu';
+import { print, italic as i } from '@pla/printaeu';
 
 print.green(`You won't ${i.on}believe${i.off} this!`);
 
